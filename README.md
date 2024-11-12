@@ -258,7 +258,8 @@ Inside Docker
 Terminal 1 Build the image
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_gazebo -t docker_ros1_tortoisebot_slam:try1 .
+cp /etc/default/keyboard .
+docker build -f dockerfile_ros1_tortoisebot_slam -t docker_ros1_tortoisebot_slam:try1 .
 ```
 
 Terminal 1 Roscore and Gazebo
