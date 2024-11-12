@@ -9,8 +9,16 @@ also I need to use docker-compose to do multiple launch of dockers in a single-s
 After install the docker engine, use the command
 
 ```
+sudo service docker start
 docker context use default
 ```
+
+Test Docker with Hello world image
+
+```
+sudo docker run hello-world
+```
+
 ### install Nvidia driver for docker
 
 ```
