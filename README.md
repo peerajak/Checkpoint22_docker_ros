@@ -234,7 +234,7 @@ xhost +local:root
 docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
 ```
 
-    Inside Docker
+Inside Docker
 
 ```
     roslaunch tortoisebot_slam view_sensors.launch
@@ -247,7 +247,7 @@ xhost +local:root
 docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
 ```
 
-    Inside Docker
+Inside Docker
 
 ```
     rosrun tortoisebot_control tortoisebot_teleop_key.py
@@ -281,7 +281,7 @@ xhost +local:root
 docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_slam:try1 bash
 ```
 
-    Inside Docker
+Inside Docker
 
 ```
     roslaunch tortoisebot_firmware server_bringup.launch
@@ -294,7 +294,7 @@ xhost +local:root
 docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_slam:try1 bash
 ```
 
-    Inside Docker
+Inside Docker
 
 ```
     roslaunch tortoisebot_slam tortoisebot_slam.launch
