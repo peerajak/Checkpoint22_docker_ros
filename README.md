@@ -96,7 +96,21 @@ docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
 ### Test X forward
 
 ```
+mkdir gimp
 cd gimp
+```
+Create a file name Dockerfile and write the following content.
+
+```
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install -y gimp
+CMD ["gimp"]
+```
+
+then build the docker
+
+```
 docker build . -t gimp:0.1
 ```
 
