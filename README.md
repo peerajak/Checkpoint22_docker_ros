@@ -18,6 +18,22 @@ Test Docker with Hello world image
 ```
 sudo docker run hello-world
 ```
+To make docker run on user without sudo
+
+```
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo gpasswd -a $USER docker
+newgrp docker
+```
+
+and log out from computer, and log in again
+
+Test with docker hello world
+
+```
+docker run hello-world
+```
 
 ### install Nvidia driver for docker
 
