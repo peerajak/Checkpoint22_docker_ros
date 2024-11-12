@@ -1,0 +1,39 @@
+FROM docker_ros1_tortoisebot_gazebo:try1
+
+RUN apt-get update && apt-get install -y ros-noetic-map-server ros-noetic-move-base ros-noetic-navigation ros-noetic-dwa-local-planner ros-noetic-ira-laser-tools ros-noetic-teleop-twist-keyboard python3-wstool python3-rosdep ninja-build stow 
+
+RUN mkdir ~/tortoisebot_ws/carto_ws && \
+cd ~/tortoisebot_ws/carto_ws && \
+wstool init src && \
+wstool merge -t src https://raw.githubusercontent.com/cartographer-project/cartographer_ros/master/cartographer_ros.rosinstall && \
+wstool update -t src
+
+RUN rosdep init && \
+rosdep update && \
+rosdep install --from-paths src --ignore-src --rosdistro=noetic -y
+
+RUN sed 's/ <depend>libabsl-dev<\/depend>/<!-- depend>libabsl-dev<\/depend-->/' ~/tortoisebot_ws/carto_ws/src/cartographer/package.xml
+
+RUN cd ~/tortoisebot_ws/src/ && git clone -b melodic-devel https://github.com/ros-perception/perception_pcl.git && \
+git clone https://github.com/ros-perception/pcl_msgs && \
+git clone -b noetic-devel https://github.com/jsk-ros-pkg/geometry2_python3.git
+
+RUN cd ~/tortoisebot_ws/carto_ws && \
+ rosdep install --from-paths src --ignore-src --rosdistro=noetic -y && \
+ src/cartographer/scripts/install_abseil.sh && \
+ catkin_make_isolated --install --use-ninja -j1 -l1 && \
+ source ~/catkin_ws/devel/setup.bash
+
+RUN cd ~/tortoisebot_ws/carto_ws/  && \
+source ~/tortoisebot_ws/carto_ws/devel_isolated/setup.bash  && \
+cd ~/tortoisebot_ws  && \
+rm -rf devel install install_isolated devel_isolated  && \
+catkin_make -j1 -l1  && \
+source ~/tortoisebot_ws/devel/setup.bash
+
+RUN echo "source ~/tortoisebot_ws/carto_ws/devel_isolated/setup.bash" >> ~/.bashrc
+RUN echo "source ~/tortoisebot_ws/devel/setup.bash" >> ~/.bashrc
+
+
+# Set the working folder at startup
+WORKDIR /tortoisebot_ws

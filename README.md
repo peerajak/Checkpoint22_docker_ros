@@ -11,7 +11,7 @@ After install the docker engine, use the command
 ```
 docker context use default
 ```
-# install Nvidia driver for docker
+### install Nvidia driver for docker
 
 ```
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
@@ -32,7 +32,7 @@ sudo apt-get update
 sudo apt-get install -y nvidia-container-toolkit
 ```
 
-# Configure Nvidia driver for docker for X forward
+### Configure Nvidia driver for docker for X forward
 
 Reference: 
 
@@ -69,7 +69,7 @@ If the sudo version works, try non-sudo version
 docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
 ```
 
-# Test X forward
+### Test X forward
 
 ```
 cd gimp
@@ -79,12 +79,14 @@ docker build . -t gimp:0.1
 Test with Sudo version
 
 ```
+xhost +local:root
 sudo docker run --rm -it --name gimp -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:ro --runtime=nvidia --gpus all gimp:0.1
 ```
 
 Test with non-sudo version
 
 ```
+xhost +local:root
 docker run --rm -it --name gimp -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:ro --runtime=nvidia --gpus all gimp:0.1
 ```
 You should see GIMP drawing app appears on your linux screen.
@@ -116,7 +118,7 @@ Inside simulation_ws/src, create a new folder named tortoisebot_ros1_docker.
 
 
 
-## Info on Tortoisebot
+### Info on Tortoisebot
 
 ```
 tortoisebot@ubuntu:~$ uname -a
@@ -131,64 +133,137 @@ tortoisebot@ubuntu:~$ uname -r
 5.4.0-1118-raspi
 ```
 
-## How to solve this checkpoint
+### How to solve this checkpoint
 
 1. Create a docker file similar to dockerfile_tb3, and launch gazebo simulation on docker on host
-2. Create a docker file similar to my_navigation_files, and launch slam rviz on docker on host
-3. Create a docker file similar to move_and_turn, and launch action server
-4. Create a docker file to launch web app
-
-5. Use docker-compose to launch all dockers at the same time
+2. Create a docker file similar to move_and_turn, and launch action server
+3. Create a docker file to launch web app
+4. Use docker-compose to launch all dockers at the same time
 
 
-## Proceed
+### 1. Gazebo Docker file
 
-1. Build the image 
+1.1. Build the image 
 
 Terminal 1
 
 ```
-docker build -f docker_ros1_tortoisebot_gazebo -t docke_ros1_tortoisebot_gazebo:try1 .
+docker build -f dockerfile_ros1_tortoisebot_gazebo -t docker_ros1_tortoisebot_gazebo:try1 .
 ```
 
-2. Test Rviz
+1.2. Test Rviz, and tortoisebot Gazebo
 
 Terminal 1
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all docke_ros1_tortoisebot_gazebo:try1 bash
-```
-    Inside docker prompt
-
-```
-    #roscore &
-    #rviz
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all docker_ros1_tortoisebot_gazebo:try1 bash
 ```
 
-3. Build ubuntu 20.04 docker base to docke_ros1_tortoisebot_gazebo
-
-```
-docker build -f docker_ros1_tortoisebot_gazebo -t docke_ros1_tortoisebot_gazebo:try1 .
-```
-
-4. Run Docker
-
-```
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all docke_ros1_tortoisebot_gazebo:try1 bash
-```
    
-    4.1 Test Rviz: inside docker run
+    1.2.1 Test Rviz: inside docker run
 
 ```
     roscore &
     rviz
 ```
 
-    4.2 Test tortoisebot gazebo: inside docker run
+    1.2.2 Test tortoisebot gazebo: inside docker run
 
 ```
     roslaunch tortoisebot_gazebo tortoisebot_playground.launch
 ```
+
+1.3 Test tortoisebot Gazebo with Sensor data in RVIZ
+
+Terminal 1 Roscore and Gazebo
+
+```
+xhost +local:root
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
+```
+
+Inside docker
+
+```
+    roslaunch tortoisebot_gazebo tortoisebot_playground.launch
+```
+
+Terminal 2 sensors
+
+```
+xhost +local:root
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
+```
+
+    Inside Docker
+
+```
+    roslaunch tortoisebot_slam view_sensors.launch
+```
+
+Terminal 3 Teleopt
+
+```
+xhost +local:root
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
+```
+
+    Inside Docker
+
+```
+    rosrun tortoisebot_control tortoisebot_teleop_key.py
+```
+
+1.4 Test tortoisebot Gazebo and slam
+
+Terminal 1 Build the image
+
+```
+docker build -f dockerfile_ros1_tortoisebot_gazebo -t docker_ros1_tortoisebot_slam:try1 .
+```
+
+Terminal 1 Roscore and Gazebo
+
+```
+xhost +local:root
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
+```
+
+Inside docker
+
+```
+    roslaunch tortoisebot_gazebo tortoisebot_playground.launch
+```
+
+Terminal 2 Server
+
+```
+xhost +local:root
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_slam:try1 bash
+```
+
+    Inside Docker
+
+```
+    roslaunch tortoisebot_firmware server_bringup.launch
+```
+
+Terminal 3 Slam
+
+```
+xhost +local:root
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_slam:try1 bash
+```
+
+    Inside Docker
+
+```
+    roslaunch tortoisebot_slam tortoisebot_slam.launch
+```
+
+
+
+
 
 
