@@ -1,0 +1,140 @@
+Guide to Install cartographer_ros Package for ROS1:
+---------------------------------------------------
+
+Running roslaunch tortoisebot_firmware server_bringup.launch without having cartographer_ros package installed will output the following error:
+
+tortoisebot@ubuntu:~$ roslaunch tortoisebot_firmware server_bringup.launch
+... logging to /home/tortoisebot/.ros/log/20c4179a-2a44-11ef-84cc-bfe444b92a4d/roslaunch-ubuntu-51613.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+
+started roslaunch server http://master:38863/
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: noetic
+ * /rosversion: 1.16.0
+
+NODES
+  /
+    cartographer_node (cartographer_ros/cartographer_node)
+
+ROS_MASTER_URI=http://master:11311
+
+ERROR: cannot launch node of type [cartographer_ros/cartographer_node]: cartographer_ros
+ROS path [0]=/opt/ros/noetic/share/ros
+ROS path [1]=/home/ubuntu/ros1_ws/src
+ROS path [2]=/home/tortoisebot/ros1_ws/src
+ROS path [3]=/home/ubuntu/ros1_ws/src
+ROS path [4]=/home/tortoisebot/ros1_ws/src
+ROS path [5]=/opt/ros/noetic/share
+No processes to monitor
+shutting down processing monitor...
+... shutting down processing monitor complete
+
+
+Below steps will fix the above error / issue:
+---------------------------------------------
+
+
+# Uninstall unattended-upgrades - It is not required for the robot!
+sudo apt purge -y unattended-upgrades
+
+# Install Programs required for the TortoiseBot to run:
+
+sudo apt-get install -y ros-noetic-joy ros-noetic-teleop-twist-joy ros-noetic-teleop-twist-keyboard ros-noetic-amcl ros-noetic-map-server ros-noetic-move-base ros-noetic-urdf ros-noetic-xacro ros-noetic-rqt-image-view ros-noetic-gmapping ros-noetic-navigation ros-noetic-joint-state-publisher ros-noetic-robot-state-publisher ros-noetic-slam-gmapping ros-noetic-dwa-local-planner ros-noetic-joint-state-publisher-gui
+
+sudo apt-get install -y ros-noetic-map-server ros-noetic-move-base ros-noetic-navigation ros-noetic-dwa-local-planner ros-noetic-ira-laser-tools ros-noetic-teleop-twist-keyboard
+
+# Installation Procedure for cartographer_ros Package starts from here:
+
+sudo apt-get update
+sudo apt-get install -y python3-wstool python3-rosdep ninja-build stow
+
+mkdir -p ~/ros1_ws/carto_ws
+cd ~/ros1_ws/carto_ws
+wstool init src
+wstool merge -t src https://raw.githubusercontent.com/cartographer-project/cartographer_ros/master/cartographer_ros.rosinstall
+wstool update -t src
+
+sudo rm -f /etc/ros/rosdep/sources.list.d/20-default.list
+sudo rosdep init
+rosdep update
+
+rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
+
+If you get the following error, then do the next two steps:
+	WARNING: ROS_PYTHON_VERSION is unset. Defaulting to 3
+	ERROR: the following packages/stacks could not have their rosdep keys resolved
+	to system dependencies:
+	cartographer: [libabsl-dev] defined as "not available" for OS version [focal]
+	cartographer_ros: Cannot locate rosdep definition for [visualization_msgs]
+	cartographer_ros_msgs: Cannot locate rosdep definition for [std_msgs]
+	cartographer_rviz: Cannot locate rosdep definition for [rviz]
+
+Step 1: sudo nano ~/ros1_ws/carto_ws/src/cartographer/package.xml
+Step 2: Comment this line: <!-- <depend>libabsl-dev</depend> -->
+
+cd ~/ros1_ws/carto_ws/src
+git clone -b melodic-devel https://github.com/ros-perception/perception_pcl.git
+git clone https://github.com/ros-perception/pcl_msgs
+git clone -b noetic-devel https://github.com/jsk-ros-pkg/geometry2_python3.git
+
+cd ~/ros1_ws/carto_ws
+rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
+
+If you get the following error, then do the next four steps:
+	WARNING: ROS_PYTHON_VERSION is unset. Defaulting to 3
+	ERROR: the following packages/stacks could not have their rosdep keys resolved
+	to system dependencies:
+	cartographer_ros: Cannot locate rosdep definition for [rosunit]
+	cartographer_ros_msgs: Cannot locate rosdep definition for [std_msgs]
+	cartographer_rviz: Cannot locate rosdep definition for [rviz]
+	geometry2: Cannot locate rosdep definition for [catkin]
+	pcl_conversions: Cannot locate rosdep definition for [std_msgs]
+	pcl_msgs: Cannot locate rosdep definition for [std_msgs]
+	pcl_ros: Cannot locate rosdep definition for [rostest]
+	perception_pcl: Cannot locate rosdep definition for [catkin]
+	test_tf2: Cannot locate rosdep definition for [rosbash]
+	tf2: Cannot locate rosdep definition for [rostime]
+	tf2_bullet: Cannot locate rosdep definition for [geometry_msgs]
+	tf2_eigen: Cannot locate rosdep definition for [geometry_msgs]
+	tf2_geometry_msgs: Cannot locate rosdep definition for [rostest]
+	tf2_kdl: Cannot locate rosdep definition for [rostest]
+	tf2_msgs: Cannot locate rosdep definition for [message_generation]
+	tf2_py: Cannot locate rosdep definition for [rospy]
+	tf2_ros: Cannot locate rosdep definition for [rostest]
+	tf2_sensor_msgs: Cannot locate rosdep definition for [geometry_msgs]
+	tf2_tools: Cannot locate rosdep definition for [catkin]
+
+Step 1: cd ~/ros1_ws/src
+Step 2: source /opt/ros/noetic/setup.bash
+Step 3: cd ..
+Step 4: catkin_make && source devel/setup.bash
+
+cd ~/ros1_ws/carto_ws
+rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
+	Output: #All required rosdeps installed successfully
+
+src/cartographer/scripts/install_abseil.sh
+Note: No commands before the previous line. Execute the shell script directly.
+
+Warning Note:
+The following step takes 1 hour 42 minutes 16 seconds to complete! Do not Disconnect from TortoiseBot or Shutdown!
+Otherwise, you will break all the TortoiseBot packages and you will have to start again from scratch!
+
+clear
+date && catkin_make_isolated --install --use-ninja -j1 -l1 && date
+Note: -jN = jobs and -lN = load_average
+
+# Finalize cartographer_ros Package Installation:
+cd ~/ros1_ws/carto_ws
+source devel_isolated/setup.bash
+cd ~/ros1_ws
+rm -rf ./build ./devel
+catkin_make && source devel/setup.bash
+
+~~~~~~~~~~

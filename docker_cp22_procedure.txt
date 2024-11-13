@@ -1,0 +1,94 @@
+Docker Checkpoint Real Robot Evaluation Procedure:
+
+Entities:
+- Robot
+- System (Computer / Laptop / Server / NOT ROBOT)
+
+
+Robot and System:
+-----------------
+
+1. download and install docker, if not done already:
+sudo apt-get update
+sudo apt-get install -y docker.io docker-compose
+sudo service docker start
+
+2. set docker to execute without sudo permissions:
+sudo usermod -aG docker $USER
+newgrp docker
+
+ROS1 Real Robot:
+----------------
+
+1. allow docker container to run programs on system
+xhost +local:docker
+
+2. ssh into tortoisebot raspberry pi:
+ssh -X -C tortoisebot@192.168.ras.pi
+
+3. export ROS_HOSTNAME to robot ip address on robot:
+source noetic
+export ROS_HOSTNAME=192.168.ras.pi
+
+4. export ROS_HOSTNAME to system ip address on system:
+export ROS_HOSTNAME=192.168.sys.tem
+
+5. export ROS_MASTER_URI to robot ip address on system:
+export ROS_MASTER_URI="http://192.168.ras.pi:11311"
+
+6. clone student ros1 docker repository into ros1_ws/src
+cd ~/ros1_ws/src
+git clone ...
+
+7. navigate to folder containing docker-compose.yaml:
+docker-compose up
+
+8. start a new terminal on system and launch rviz:
+- source noetic
+- export ROS_HOSTNAME=192.168.sys.tem
+- export ROS_MASTER_URI="http://192.168.ras.pi:11311"
+- rviz / rosrun rviz rviz
+
+9. add display elements to rviz
+
+10. use another terminal to ssh into tortoisebot
+
+11. use one of the docker containers to move the robot for mapping
+docker exec -it <container_id> /bin/bash
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+
+12. close docker for ros1 when complete:
+docker-compose down
+
+ROS2 Real Robot:
+----------------
+
+1. allow docker container to run programs on system
+xhost +local:docker
+
+2. ssh into tortoisebot raspberry pi:
+ssh -X -C tortoisebot@192.168.ras.pi
+
+3. clone student ros2 docker repository into ros2_ws/src
+cd ~/ros2_ws/src
+git clone ...
+
+4. navigate to folder containing docker-compose.yaml:
+docker-compose up
+
+5. start a new terminal on system and launch rviz:
+- source galactic
+- rviz2
+
+6. add display elements to rviz
+
+7. use another terminal to ssh into tortoisebot
+
+8. use one of the docker containers to move the robot for mapping
+docker exec -it <container_id> /bin/bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+9. close docker for ros1 when complete:
+docker-compose down
+
+----------
