@@ -1,15 +1,5 @@
-FROM docker_ros1_tortoisebot_gazebo:try1
+FROM docker_ros1_tortoisebot_slam:step1
 
-COPY ./keyboard /etc/default/keyboard
-
-RUN apt-get update && apt-get install -y ros-noetic-dwa-local-planner 
-RUN apt-get install -y ros-noetic-ira-laser-tools ros-noetic-teleop-twist-keyboard python3-wstool python3-rosdep ninja-build stow 
-
-RUN mkdir /tortoisebot_ws/carto_ws && \
-cd /tortoisebot_ws/carto_ws && \
-wstool init src && \
-wstool merge -t src https://raw.githubusercontent.com/cartographer-project/cartographer_ros/master/cartographer_ros.rosinstall && \
-wstool update -t src
 
 RUN sed -i 's/ <depend>libabsl-dev<\/depend>/<!-- depend>libabsl-dev<\/depend-->/' /tortoisebot_ws/carto_ws/src/cartographer/package.xml
 
