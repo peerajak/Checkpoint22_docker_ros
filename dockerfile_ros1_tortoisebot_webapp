@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Installing nginx
 RUN apt-get update \
-    && apt-get install -y nginx  \
+    && apt-get install -y nginx git  \
     && rm -rf /var/lib/apt/lists/*
 
 # Copying the local entrypoint.sh file to /entrypoint.sh in the docker image
