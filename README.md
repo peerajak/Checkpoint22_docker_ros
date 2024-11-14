@@ -334,7 +334,66 @@ docker build -f dockerfile_ros1_tortoisebot_webapp -t docker_ros1_tortoisebot_we
 then run the image
 
 ```
-docker run docker_ros1_tortoisebot_webapp:try1
+docker run --rm -it -p 8001:80 docker_ros1_tortoisebot_webapp:try1 
+```
+-p host_port:container_port
+
+
+
+### WOrking as of now
+
+Terminal 1
+
+```
+cd ~/catkin_ws
+./carto_ws/overlay_setup.sh
+roslaunch tortoisebot_gazebo tortoisebot_playground.launch
+```
+
+Terminal 2
+
+```
+cd ~/catkin_ws
+./carto_ws/overlay_setup.sh
+roslaunch tortoisebot_firmware server_bringup.launch
+```
+
+Terminal 3
+
+
+```
+cd ~/catkin_ws
+./carto_ws/overlay_setup.sh
+roslaunch tortoisebot_slam tortoisebot_slam.launch
+```
+
+Terminal 4
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+roslaunch robot_gui_bridge websocket.launch
+```
+
+Terminal 5
+
+```
+docker run --rm -it -p 8001:80 docker_ros1_tortoisebot_webapp:try1
+```
+
+Terminal 6
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+rostopic echo /cmd_vel
 ```
 
 
+Terminal 7
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+rostopic pub -1 /cmd_vel geometry_msgs/Twist '{linear:  {x: -0.01, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+```
