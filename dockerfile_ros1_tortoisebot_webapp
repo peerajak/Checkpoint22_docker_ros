@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Installing nginx
 RUN apt-get update \
-    && apt-get install -y nginx git  \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nginx git  \
     && rm -rf /var/lib/apt/lists/*
 
 # Copying the local entrypoint.sh file to /entrypoint.sh in the docker image
@@ -20,4 +20,4 @@ cp -r * /var/www/html
 ENTRYPOINT ["/bin/bash"]
 
 # We want /bin/bash to execute our /entrypoint.sh when container starts
-CMD ["/entrypoint.sh"]
+#CMD ["/entrypoint.sh"]

@@ -277,9 +277,30 @@ Inside docker
 
 Terminal 2 Server
 
+build the docker
+
+```
+cp /etc/default/keyboard .
+docker build -f dockerfile_ros1_tortoisebot_slam -t docker_ros1_tortoisebot_slam:try1 .
+```
+
 ```
 xhost +local:root
 docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_slam:try1 bash
+```
+
+Check Overlay workspace
+```
+rospack list | grep -e tortoisebot_ -e cartographer_ros
+```
+
+You should see packages whose name are tortoisebot and cartographer_ros
+
+If the overlay was not successful, do
+
+```
+source /tortoisebot_ws/devel/setup.bash
+source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash
 ```
 
 Inside Docker
@@ -302,7 +323,18 @@ Inside Docker
 ```
 
 
+## Web app
 
+Terminal 1 Build the image
 
+```
+docker build -f dockerfile_ros1_tortoisebot_webapp -t docker_ros1_tortoisebot_webapp:try1 .
+```
+
+then run the image
+
+```
+docker run docker_ros1_tortoisebot_webapp:try1
+```
 
 

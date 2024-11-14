@@ -2,8 +2,8 @@ FROM docker_ros1_tortoisebot_gazebo:try1
 
 COPY ./keyboard /etc/default/keyboard
 
-RUN apt-get update && apt-get install -y ros-noetic-dwa-local-planner 
-RUN apt-get install -y ros-noetic-ira-laser-tools ros-noetic-teleop-twist-keyboard python3-wstool python3-rosdep ninja-build stow 
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ros-noetic-dwa-local-planner 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ros-noetic-ira-laser-tools ros-noetic-teleop-twist-keyboard python3-wstool python3-rosdep ninja-build stow 
 
 RUN mkdir /tortoisebot_ws/carto_ws && \
 cd /tortoisebot_ws/carto_ws && \

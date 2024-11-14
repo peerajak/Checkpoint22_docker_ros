@@ -22,14 +22,15 @@ RUN source /opt/ros/noetic/setup.bash && catkin_make -j3 -l3
 RUN source /tortoisebot_ws/devel/setup.bash 
 RUN source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash
 
-RUN echo "source /tortoisebot_ws/devel/setup.bash" >> /.bashrc
-RUN echo "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash" >> /.bashrc
+RUN echo "source /tortoisebot_ws/devel/setup.bash" >> /root/.bashrc
+RUN echo "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash" >> /root/.bashrc
 
 
 
 # Set the working folder at startup
 WORKDIR /tortoisebot_ws
-RUN source /.bashrc
+# COPY ./chain_setup.sh /tortoisebot_ws/
+# CMD ["source", "/tortoisebot_ws/chain_setup.sh"]
 
 #Test with
 # rospack list | grep -e tortoisebot_ -e cartographer_ros
@@ -61,4 +62,3 @@ RUN source /.bashrc
 # tortoisebot_navigation /tortoisebot_ws/src/tortoisebot/tortoisebot_navigation
 # tortoisebot_slam /tortoisebot_ws/src/tortoisebot/tortoisebot_slam
 # ydlidar_ros /tortoisebot_ws/src/tortoisebot/ydlidar_ros
-
