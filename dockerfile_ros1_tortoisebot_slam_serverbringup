@@ -1,0 +1,75 @@
+FROM docker_ros1_tortoisebot_gazebo:try1
+
+COPY ./keyboard /etc/default/keyboard
+
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ros-noetic-dwa-local-planner 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ros-noetic-ira-laser-tools ros-noetic-teleop-twist-keyboard python3-wstool python3-rosdep ninja-build stow 
+
+RUN mkdir /tortoisebot_ws/carto_ws && \
+cd /tortoisebot_ws/carto_ws && \
+wstool init src && \
+wstool merge -t src https://raw.githubusercontent.com/cartographer-project/cartographer_ros/master/cartographer_ros.rosinstall && \
+wstool update -t src
+
+RUN sed -i 's/ <depend>libabsl-dev<\/depend>/<!-- depend>libabsl-dev<\/depend-->/' /tortoisebot_ws/carto_ws/src/cartographer/package.xml
+
+RUN cd /tortoisebot_ws/carto_ws && rosdep init && \
+rosdep update && \
+rosdep install --from-paths src --ignore-src --rosdistro=noetic -y
+
+RUN cd /tortoisebot_ws/src/ && git clone -b melodic-devel https://github.com/ros-perception/perception_pcl.git && \
+git clone https://github.com/ros-perception/pcl_msgs && \
+git clone -b noetic-devel https://github.com/jsk-ros-pkg/geometry2_python3.git 
+
+RUN cd /tortoisebot_ws/carto_ws && \
+rosdep install --from-paths src --ignore-src --rosdistro=noetic -y && \
+src/cartographer/scripts/install_abseil.sh
+
+RUN cd /tortoisebot_ws/carto_ws &&  source /tortoisebot_ws/devel/setup.bash &&catkin_make_isolated --install --use-ninja -j3 -l3 
+RUN cd /tortoisebot_ws  && rm -rf devel install install_isolated devel_isolated 
+RUN source /opt/ros/noetic/setup.bash && catkin_make -j3 -l3  
+
+RUN source /tortoisebot_ws/devel/setup.bash 
+RUN source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash
+
+RUN echo "source /tortoisebot_ws/devel/setup.bash" >> /root/.bashrc
+RUN echo "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash" >> /root/.bashrc
+
+
+
+# Set the working folder at startup
+WORKDIR /tortoisebot_ws
+#roslaunch tortoisebot_firmware server_bringup.launch
+CMD ["roslaunch", "tortoisebot_firmware" ,"server_bringup.launch"]
+
+#Test with
+# rospack list | grep -e tortoisebot_ -e cartographer_ros
+
+# Expect to see
+# cartographer /tortoisebot_ws/carto_ws/install_isolated/share/cartographer
+# cartographer_ros /tortoisebot_ws/carto_ws/install_isolated/share/cartographer_ros
+# cartographer_ros_msgs /tortoisebot_ws/carto_ws/install_isolated/share/cartographer_ros_msgs
+# cartographer_rviz /tortoisebot_ws/carto_ws/src/cartographer_ros/cartographer_rviz
+# pcl_conversions /tortoisebot_ws/src/perception_pcl/pcl_conversions
+# pcl_msgs /tortoisebot_ws/src/pcl_msgs
+# pcl_ros /tortoisebot_ws/src/perception_pcl/pcl_ros
+# raspicam_node /tortoisebot_ws/src/tortoisebot/raspicam_node
+# test_tf2 /tortoisebot_ws/src/geometry2_python3/test_tf2
+# tf2 /tortoisebot_ws/src/geometry2_python3/tf2
+# tf2_bullet /tortoisebot_ws/src/geometry2_python3/tf2_bullet
+# tf2_eigen /tortoisebot_ws/src/geometry2_python3/tf2_eigen
+# tf2_geometry_msgs /tortoisebot_ws/src/geometry2_python3/tf2_geometry_msgs
+# tf2_kdl /tortoisebot_ws/src/geometry2_python3/tf2_kdl
+# tf2_msgs /tortoisebot_ws/src/geometry2_python3/tf2_msgs
+# tf2_py /tortoisebot_ws/src/geometry2_python3/tf2_py
+# tf2_ros /tortoisebot_ws/src/geometry2_python3/tf2_ros
+# tf2_sensor_msgs /tortoisebot_ws/src/geometry2_python3/tf2_sensor_msgs
+# tf2_tools /tortoisebot_ws/src/geometry2_python3/tf2_tools
+# tortoisebot_control /tortoisebot_ws/src/tortoisebot/tortoisebot_control
+# tortoisebot_description /tortoisebot_ws/src/tortoisebot/tortoisebot_description
+# tortoisebot_firmware /tortoisebot_ws/src/tortoisebot/tortoisebot_firmware
+# tortoisebot_gazebo /tortoisebot_ws/src/tortoisebot/tortoisebot_gazebo
+# tortoisebot_navigation /tortoisebot_ws/src/tortoisebot/tortoisebot_navigation
+# tortoisebot_slam /tortoisebot_ws/src/tortoisebot/tortoisebot_slam
+# ydlidar_ros /tortoisebot_ws/src/tortoisebot/ydlidar_ros
+

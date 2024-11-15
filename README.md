@@ -346,7 +346,7 @@ Terminal 1
 
 ```
 cd ~/catkin_ws
-./carto_ws/overlay_setup.sh
+source carto_ws/overlay_setup.sh
 roslaunch tortoisebot_gazebo tortoisebot_playground.launch
 ```
 
@@ -354,7 +354,7 @@ Terminal 2
 
 ```
 cd ~/catkin_ws
-./carto_ws/overlay_setup.sh
+source carto_ws/overlay_setup.sh
 roslaunch tortoisebot_firmware server_bringup.launch
 ```
 
@@ -363,7 +363,7 @@ Terminal 3
 
 ```
 cd ~/catkin_ws
-./carto_ws/overlay_setup.sh
+source carto_ws/overlay_setup.sh
 roslaunch tortoisebot_slam tortoisebot_slam.launch
 ```
 
