@@ -344,27 +344,42 @@ docker run --rm -it -p 8001:80 docker_ros1_tortoisebot_webapp:try1
 
 Terminal 1
 
-```
-cd ~/catkin_ws
-source carto_ws/overlay_setup.sh
-roslaunch tortoisebot_gazebo tortoisebot_playground.launch
-```
+build
 
+```
+docker build -f dockerfile_ros1_tortoisebot_gazebo_playground -t docker_ros1_tortoisebot_gazebo:playground .
+```
+run
+
+```
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:playground
+```
 Terminal 2
 
+build
+
 ```
-cd ~/catkin_ws
-source carto_ws/overlay_setup.sh
-roslaunch tortoisebot_firmware server_bringup.launch
+docker build -f dockerfile_ros1_tortoisebot_slam_serverbringup -t docker_ros1_tortoisebot_slam:serverbringup .
 ```
+
+run
+
+```
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host  docker_ros1_tortoisebot_slam:serverbringup 
+```
+
 
 Terminal 3
 
 
 ```
-cd ~/catkin_ws
-source carto_ws/overlay_setup.sh
-roslaunch tortoisebot_slam tortoisebot_slam.launch
+docker build -f dockerfile_ros1_tortoisebot_slam_slam -t docker_ros1_tortoisebot_slam:slam .
+```
+
+run
+
+```
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host  docker_ros1_tortoisebot_slam:slam
 ```
 
 Terminal 4

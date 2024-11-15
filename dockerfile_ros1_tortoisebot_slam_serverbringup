@@ -40,7 +40,11 @@ RUN echo "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash" >> /root/.b
 # Set the working folder at startup
 WORKDIR /tortoisebot_ws
 #roslaunch tortoisebot_firmware server_bringup.launch
-CMD ["roslaunch", "tortoisebot_firmware" ,"server_bringup.launch"]
+ENV ROS_DOMAIN_ID=1
+ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+
+# Define entrypoint
+ENTRYPOINT ["/bin/bash", "-c", "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash &&roslaunch tortoisebot_firmware server_bringup.launch"]
 
 #Test with
 # rospack list | grep -e tortoisebot_ -e cartographer_ros
