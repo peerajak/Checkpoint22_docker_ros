@@ -466,7 +466,7 @@ Terminal 7 tf2_web server
 roslaunch course_web_dev_ros tf2_web.launch
 ```
 
-#### Run with docker-compose
+#### RUN full web control Robot with docker-compose
 
 ```
 docker compose up
