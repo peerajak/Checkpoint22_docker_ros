@@ -42,34 +42,4 @@ WORKDIR /tortoisebot_ws
 # COPY ./chain_setup.sh /tortoisebot_ws/
 # CMD ["source", "/tortoisebot_ws/chain_setup.sh"]
 
-#Test with
-# rospack list | grep -e tortoisebot_ -e cartographer_ros
-
-# Expect to see
-# cartographer /tortoisebot_ws/carto_ws/install_isolated/share/cartographer
-# cartographer_ros /tortoisebot_ws/carto_ws/install_isolated/share/cartographer_ros
-# cartographer_ros_msgs /tortoisebot_ws/carto_ws/install_isolated/share/cartographer_ros_msgs
-# cartographer_rviz /tortoisebot_ws/carto_ws/src/cartographer_ros/cartographer_rviz
-# pcl_conversions /tortoisebot_ws/src/perception_pcl/pcl_conversions
-# pcl_msgs /tortoisebot_ws/src/pcl_msgs
-# pcl_ros /tortoisebot_ws/src/perception_pcl/pcl_ros
-# raspicam_node /tortoisebot_ws/src/tortoisebot/raspicam_node
-# test_tf2 /tortoisebot_ws/src/geometry2_python3/test_tf2
-# tf2 /tortoisebot_ws/src/geometry2_python3/tf2
-# tf2_bullet /tortoisebot_ws/src/geometry2_python3/tf2_bullet
-# tf2_eigen /tortoisebot_ws/src/geometry2_python3/tf2_eigen
-# tf2_geometry_msgs /tortoisebot_ws/src/geometry2_python3/tf2_geometry_msgs
-# tf2_kdl /tortoisebot_ws/src/geometry2_python3/tf2_kdl
-# tf2_msgs /tortoisebot_ws/src/geometry2_python3/tf2_msgs
-# tf2_py /tortoisebot_ws/src/geometry2_python3/tf2_py
-# tf2_ros /tortoisebot_ws/src/geometry2_python3/tf2_ros
-# tf2_sensor_msgs /tortoisebot_ws/src/geometry2_python3/tf2_sensor_msgs
-# tf2_tools /tortoisebot_ws/src/geometry2_python3/tf2_tools
-# tortoisebot_control /tortoisebot_ws/src/tortoisebot/tortoisebot_control
-# tortoisebot_description /tortoisebot_ws/src/tortoisebot/tortoisebot_description
-# tortoisebot_firmware /tortoisebot_ws/src/tortoisebot/tortoisebot_firmware
-# tortoisebot_gazebo /tortoisebot_ws/src/tortoisebot/tortoisebot_gazebo
-# tortoisebot_navigation /tortoisebot_ws/src/tortoisebot/tortoisebot_navigation
-# tortoisebot_slam /tortoisebot_ws/src/tortoisebot/tortoisebot_slam
-# ydlidar_ros /tortoisebot_ws/src/tortoisebot/ydlidar_ros
 

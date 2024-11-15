@@ -372,6 +372,18 @@ run
 SLOT_ROSBRIDGE_PORT=9090 roslaunch course_web_dev_ros web.launch
 ```
 
+or using docker
+
+build (if required)
+```
+docker build -f dockerfile_ros1_tortoisebot_waypoint -t docker_ros1_tortoisebot_waypoint:try1 .
+```
+run
+
+```
+docker run -it --net=host docker_ros1_tortoisebot_waypoint:try1
+```
+
 Terminal 3 Server Bring-up
 
 build (if required)
@@ -436,10 +448,28 @@ cd tortoisebot_webapp
 python -m http.server 8001
 ```
 
+or docker
+
+```
+docker build -f dockerfile_ros1_tortoisebot_webapp -t docker_ros1_tortoisebot_webapp:try1 .
+```
+
+and run
+
+```
+docker run --rm -it -p 8001:80 docker_ros1_tortoisebot_webapp:try1
+```
+
 Terminal 7 tf2_web server
 
 ```
 roslaunch course_web_dev_ros tf2_web.launch
+```
+
+#### Run with docker-compose
+
+```
+docker compose up
 ```
 
 Helper commands
@@ -450,7 +480,14 @@ source devel/setup.bash
 rostopic pub -1 /cmd_vel geometry_msgs/Twist '{linear:  {x: -0.01, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
 ```
 
+theconstructsip web video address
+
+```
+https://<theconstructsip>/stream?topic=/camera/image_raw&width=400&height=300
+```
+
 My computer's web video address
-http://127.0.0.1:11315/stream?topic=/camera/image_raw&width=400&height=300
-or still image at
+
+```
 http://127.0.0.1:11315/stream_viewer?topic=/raspicam_node/image
+```
