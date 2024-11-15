@@ -11,9 +11,15 @@ RUN apt-get update \
 # Copying the local entrypoint.sh file to /entrypoint.sh in the docker image
 COPY ./entrypoint.sh /entrypoint.sh
 
+# If my computer
 RUN git config --global http.sslverify false  && git clone https://github.com/peerajak/Checkpoint21_WebdevRobotics.git tortoisebot_webapp && \
-cd tortoisebot_webapp && git checkout checkpoint22 && \
+cd tortoisebot_webapp && git switch checkpoint22 && \
 cp -r * /var/www/html
+
+# If the consturct's server
+#RUN git config --global http.sslverify false  && git clone https://github.com/peerajak/Checkpoint21_WebdevRobotics.git tortoisebot_webapp && \
+#cd tortoisebot_webapp && \
+#cp -r * /var/www/html
 
 
 # /bin/bash is the command we want to execute when running a docker container

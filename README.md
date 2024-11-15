@@ -340,11 +340,13 @@ docker run --rm -it -p 8001:80 docker_ros1_tortoisebot_webapp:try1
 
 
 
-### WOrking as of now
+### RUN full web control Robot
 
-Terminal 1
+tar all the course_web_dev_ros content from the construct CP21, and place it under catkin_ws/src, and do catkin_make
 
-build
+Terminal 1 Playground
+
+build (if required)
 
 ```
 docker build -f dockerfile_ros1_tortoisebot_gazebo_playground -t docker_ros1_tortoisebot_gazebo:playground .
@@ -354,9 +356,25 @@ run
 ```
 docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:playground
 ```
-Terminal 2
+Terminal 2 Rosbridge 
 
-build
+build (if required)
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+catkin_make
+```
+
+run
+
+```
+SLOT_ROSBRIDGE_PORT=9090 roslaunch course_web_dev_ros web.launch
+```
+
+Terminal 3 Server Bring-up
+
+build (if required)
 
 ```
 docker build -f dockerfile_ros1_tortoisebot_slam_serverbringup -t docker_ros1_tortoisebot_slam:serverbringup .
@@ -369,8 +387,9 @@ docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all -
 ```
 
 
-Terminal 3
+Terminal 4 Slam
 
+build (if required)
 
 ```
 docker build -f dockerfile_ros1_tortoisebot_slam_slam -t docker_ros1_tortoisebot_slam:slam .
@@ -382,7 +401,25 @@ run
 docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host  docker_ros1_tortoisebot_slam:slam
 ```
 
-Terminal 4
+Terminal 5 Action Server
+
+build (if required)
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+catkin_make
+```
+
+run
+
+```
+cd ~/catkin_ws
+source devel/setup.bash
+rosrun course_web_dev_ros tortoisebot_action_server.py
+```
+
+
 
 ```
 cd ~/catkin_ws
@@ -390,25 +427,30 @@ source devel/setup.bash
 roslaunch robot_gui_bridge websocket.launch
 ```
 
-Terminal 5
+Terminal 6  Web server
+
+run
 
 ```
-docker run --rm -it -p 8001:80 docker_ros1_tortoisebot_webapp:try1
+cd tortoisebot_webapp
+python -m http.server 8001
 ```
 
-Terminal 6
+Terminal 7 tf2_web server
 
 ```
-cd ~/catkin_ws
-source devel/setup.bash
-rostopic echo /cmd_vel
+roslaunch course_web_dev_ros tf2_web.launch
 ```
 
-
-Terminal 7
+Helper commands
 
 ```
 cd ~/catkin_ws
 source devel/setup.bash
 rostopic pub -1 /cmd_vel geometry_msgs/Twist '{linear:  {x: -0.01, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
 ```
+
+My computer's web video address
+http://127.0.0.1:11315/stream?topic=/camera/image_raw&width=400&height=300
+or still image at
+http://127.0.0.1:11315/stream_viewer?topic=/raspicam_node/image
