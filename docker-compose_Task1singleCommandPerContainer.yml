@@ -20,10 +20,9 @@ services:
             count: 1
             capabilities: [gpu]
 
-
-  tf2_webbridge_action_server:
-    image: docker_ros1_tortoisebot_waypoint:try1
-    container_name: tf2_webbridge_action_server   
+  tortoisebot-serverbringup:
+    image: docker_ros1_tortoisebot_slam:try1
+    container_name: tortoisebot-serverbringup
     network_mode: host
     depends_on:
      tortoisebot-sim:
@@ -31,7 +30,7 @@ services:
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
-    command: "/tortoisebot_ws/entrypoint.sh"
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash &&roslaunch tortoisebot_firmware server_bringup.launch" 
 
 
   tortoisebot-slam:
@@ -39,13 +38,13 @@ services:
     container_name: tortoisebot-slam
     network_mode: host
     depends_on:
-      tf2_webbridge_action_server:
+      tortoisebot-serverbringup:
         condition: service_started
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
       - DISPLAY=${DISPLAY} 
-    command: "/tortoisebot_ws/entrypoint.sh"
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && roslaunch tortoisebot_slam tortoisebot_slam.launch" 
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix 
     deploy:
@@ -55,6 +54,36 @@ services:
           - driver: nvidia
             count: 1
             capabilities: [gpu]
+
+  rosbridge:
+    image: docker_ros1_tortoisebot_waypoint:try1
+    container_name: rosbridge
+    network_mode: host
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=1
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch course_web_dev_ros web.launch"
+
+  tf2_web:
+    image: docker_ros1_tortoisebot_waypoint:try1
+    container_name: tf2_web
+    network_mode: host
+    depends_on:
+      tortoisebot-serverbringup:
+        condition: service_started
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=1
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch course_web_dev_ros tf2_web.launch"
+
+  action-server:
+    image: docker_ros1_tortoisebot_waypoint:try1
+    container_name: action-server
+    network_mode: host
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=1
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && rosrun course_web_dev_ros tortoisebot_action_server.py"
 
   web-server:
     image: docker_ros1_tortoisebot_webapp:try1
@@ -66,10 +95,6 @@ services:
     ports:
       - 8001:8001
     command: "entrypoint.sh"
-
-
-
-
 
 
 

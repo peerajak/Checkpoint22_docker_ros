@@ -9,7 +9,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Copying the local entrypoint.sh file to /entrypoint.sh in the docker image
-COPY ./entrypoint.sh /entrypoint.sh
+COPY ./entrypoint_webapp.sh /entrypoint.sh
 
 # If my computer
 RUN git config --global http.sslverify false  && git clone -b checkpoint22 https://github.com/peerajak/Checkpoint21_WebdevRobotics.git tortoisebot_webapp && \

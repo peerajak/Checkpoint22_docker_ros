@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+
+
+  tortoisebot-serverbringup:
+    image: docker_ros1_tortoisebot_slam:try1
+    container_name: tortoisebot-serverbringup
+    network_mode: host
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=1
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash &&roslaunch tortoisebot_firmware server_bringup.launch" 
+
+
+

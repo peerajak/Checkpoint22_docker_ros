@@ -34,9 +34,9 @@ services:
     command: "/tortoisebot_ws/entrypoint.sh"
 
 
-  tortoisebot-slam:
+  tortoisebot-serverbringup:
     image: docker_ros1_tortoisebot_slam:try1
-    container_name: tortoisebot-slam
+    container_name: tortoisebot-serverbringup
     network_mode: host
     depends_on:
       tf2_webbridge_action_server:
@@ -44,8 +44,21 @@ services:
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash &&roslaunch tortoisebot_firmware server_bringup.launch" 
+ 
+
+  tortoisebot-slam:
+    image: docker_ros1_tortoisebot_slam:try1
+    container_name: tortoisebot-slam
+    network_mode: host
+    depends_on:
+      tortoisebot-serverbringup:
+        condition: service_started
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=1
       - DISPLAY=${DISPLAY} 
-    command: "/tortoisebot_ws/entrypoint.sh"
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && roslaunch tortoisebot_slam tortoisebot_slam.launch" 
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix 
     deploy:

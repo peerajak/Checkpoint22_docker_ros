@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+
+
+  tortoisebot-slam:
+    image: docker_ros1_tortoisebot_slam:try1
+    container_name: tortoisebot-slam
+    network_mode: host
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=1
+      - DISPLAY=${DISPLAY} 
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && roslaunch tortoisebot_slam tortoisebot_slam.launch" 
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix 
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
+
+

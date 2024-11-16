@@ -48,6 +48,8 @@ ENV ROS_DOMAIN_ID=1
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 ENV SLOT_ROSBRIDGE_PORT=9090 
 
+COPY ./entrypoint_waypoint.sh /tortoisebot_ws/entrypoint.sh
+
 # Define entrypoint
 # SLOT_ROSBRIDGE_PORT=9090 roslaunch course_web_dev_ros web.launch
 # rosrun course_web_dev_ros tortoisebot_action_server.py & roslaunch course_web_dev_ros tf2_web.launch & roslaunch course_web_dev_ros web.launch

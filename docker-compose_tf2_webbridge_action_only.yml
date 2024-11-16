@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+
+ 
+  tf2_webbridge_action_server:
+    image: docker_ros1_tortoisebot_waypoint:try1
+    container_name: tf2_webbridge_action_server   
+    network_mode: host
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=1
+    command: "/tortoisebot_ws/entrypoint.sh"
+
+
+
+
+
+
+

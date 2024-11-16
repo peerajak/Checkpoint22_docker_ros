@@ -42,4 +42,6 @@ WORKDIR /tortoisebot_ws
 # COPY ./chain_setup.sh /tortoisebot_ws/
 # CMD ["source", "/tortoisebot_ws/chain_setup.sh"]
 
+COPY ./entrypoint_slam.sh /tortoisebot_ws/entrypoint.sh
+
 
