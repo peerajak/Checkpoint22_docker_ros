@@ -2,7 +2,7 @@ version: '3.7'
 services:
 
   tortoisebot-sim:
-    image: docker_ros1_tortoisebot_gazebo:try1
+    image: tortoisebot-ros1-gazebo:try1
     container_name: tortoisebot-gazebo
     network_mode: host
     environment:
@@ -21,7 +21,7 @@ services:
             capabilities: [gpu]
 
   tortoisebot-serverbringup:
-    image: docker_ros1_tortoisebot_slam:try1
+    image: tortoisebot-ros1-slam:try1
     container_name: tortoisebot-serverbringup
     network_mode: host
     depends_on:
@@ -34,7 +34,7 @@ services:
 
 
   tortoisebot-slam:
-    image: docker_ros1_tortoisebot_slam:try1
+    image: tortoisebot-ros1-slam:try1
     container_name: tortoisebot-slam
     network_mode: host
     depends_on:
@@ -56,7 +56,7 @@ services:
             capabilities: [gpu]
 
   rosbridge:
-    image: docker_ros1_tortoisebot_waypoint:try1
+    image: tortoisebot-ros1-waypoints:try1
     container_name: rosbridge
     network_mode: host
     environment:
@@ -65,7 +65,7 @@ services:
     command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch course_web_dev_ros web.launch"
 
   tf2_web:
-    image: docker_ros1_tortoisebot_waypoint:try1
+    image: tortoisebot-ros1-waypoints:try1
     container_name: tf2_web
     network_mode: host
     depends_on:
@@ -77,7 +77,7 @@ services:
     command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch course_web_dev_ros tf2_web.launch"
 
   action-server:
-    image: docker_ros1_tortoisebot_waypoint:try1
+    image: tortoisebot-ros1-waypoints:try1
     container_name: action-server
     network_mode: host
     environment:
@@ -86,7 +86,7 @@ services:
     command: bash -c "source /tortoisebot_ws/devel/setup.bash && rosrun course_web_dev_ros tortoisebot_action_server.py"
 
   web-server:
-    image: docker_ros1_tortoisebot_webapp:try1
+    image: tortoisebot-ros1-webapp:try1
     container_name: web-server
     network_mode: host
     environment:

@@ -3,7 +3,7 @@ services:
 
 
   tortoisebot-slam:
-    image: docker_ros1_tortoisebot_slam:try1
+    image: tortoisebot-ros1-slam:try1
     container_name: tortoisebot-slam
     network_mode: host
     environment:

@@ -3,7 +3,7 @@ services:
 
  
   tf2_webbridge_action_server:
-    image: docker_ros1_tortoisebot_waypoint:try1
+    image: tortoisebot-ros1-waypoints:try1
     container_name: tf2_webbridge_action_server   
     network_mode: host
     environment:

@@ -186,7 +186,7 @@ tortoisebot@ubuntu:~$ uname -r
 Terminal 1
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_gazebo -t docker_ros1_tortoisebot_gazebo:try1 .
+docker build -f dockerfile_ros1_tortoisebot_gazebo -t tortoisebot-ros1-gazebo:try1 .
 ```
 
 1.2. Test Rviz, and tortoisebot Gazebo
@@ -195,7 +195,7 @@ Terminal 1
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all docker_ros1_tortoisebot_gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all tortoisebot-ros1-gazebo:try1 bash
 ```
 
    
@@ -218,7 +218,7 @@ Terminal 1 Roscore and Gazebo
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:try1 bash
 ```
 
 Inside docker
@@ -231,7 +231,7 @@ Terminal 2 sensors
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:try1 bash
 ```
 
 Inside Docker
@@ -244,7 +244,7 @@ Terminal 3 Teleopt
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:try1 bash
 ```
 
 Inside Docker
@@ -259,14 +259,14 @@ Terminal 1 Build the image
 
 ```
 cp /etc/default/keyboard .
-docker build -f dockerfile_ros1_tortoisebot_slam -t docker_ros1_tortoisebot_slam:try1 .
+docker build -f dockerfile_ros1_tortoisebot_slam -t tortoisebot-ros1-slam:try1 .
 ```
 
 Terminal 1 Roscore and Gazebo
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:try1 bash
 ```
 
 Inside docker
@@ -281,12 +281,12 @@ build the docker
 
 ```
 cp /etc/default/keyboard .
-docker build -f dockerfile_ros1_tortoisebot_slam -t docker_ros1_tortoisebot_slam:try1 .
+docker build -f dockerfile_ros1_tortoisebot_slam -t tortoisebot-ros1-slam:try1 .
 ```
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_slam:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-slam:try1 bash
 ```
 
 Check Overlay workspace
@@ -313,7 +313,7 @@ Terminal 3 Slam
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_slam:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-slam:try1 bash
 ```
 
 Inside Docker
@@ -328,13 +328,13 @@ Inside Docker
 Terminal 1 Build the image
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_webapp -t docker_ros1_tortoisebot_webapp:try1 .
+docker build -f dockerfile_ros1_tortoisebot_webapp -t tortoisebot-ros1-webapp:try1 .
 ```
 
 then run the image
 
 ```
-docker run --rm -it -p 8001:80 docker_ros1_tortoisebot_webapp:try1 
+docker run --rm -it -p 8001:80 tortoisebot-ros1-webapp:try1 
 ```
 -p host_port:container_port
 
@@ -349,12 +349,12 @@ Terminal 1 Playground
 build (if required)
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_gazebo_playground -t docker_ros1_tortoisebot_gazebo:playground .
+docker build -f dockerfile_ros1_tortoisebot_gazebo_playground -t tortoisebot-ros1-gazebo:playground .
 ```
 run
 
 ```
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host docker_ros1_tortoisebot_gazebo:playground
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:playground
 ```
 Terminal 2 Rosbridge 
 
@@ -376,12 +376,12 @@ or using docker
 
 build (if required)
 ```
-docker build -f dockerfile_ros1_tortoisebot_waypoint -t docker_ros1_tortoisebot_waypoint:try1 .
+docker build -f dockerfile_ros1_tortoisebot_waypoint -t tortoisebot-ros1-waypoints:try1 .
 ```
 run
 
 ```
-docker run -it --net=host docker_ros1_tortoisebot_waypoint:try1
+docker run -it --net=host tortoisebot-ros1-waypoints:try1
 ```
 
 Terminal 3 Server Bring-up
@@ -389,13 +389,13 @@ Terminal 3 Server Bring-up
 build (if required)
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_slam_serverbringup -t docker_ros1_tortoisebot_slam:serverbringup .
+docker build -f dockerfile_ros1_tortoisebot_slam_serverbringup -t tortoisebot-ros1-slam:serverbringup .
 ```
 
 run
 
 ```
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host  docker_ros1_tortoisebot_slam:serverbringup 
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host  tortoisebot-ros1-slam:serverbringup 
 ```
 
 
@@ -404,13 +404,13 @@ Terminal 4 Slam
 build (if required)
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_slam_slam -t docker_ros1_tortoisebot_slam:slam .
+docker build -f dockerfile_ros1_tortoisebot_slam_slam -t tortoisebot-ros1-slam:slam .
 ```
 
 run
 
 ```
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host  docker_ros1_tortoisebot_slam:slam
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host  tortoisebot-ros1-slam:slam
 ```
 
 Terminal 5 Action Server
@@ -451,13 +451,13 @@ python -m http.server 8001
 or docker
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_webapp -t docker_ros1_tortoisebot_webapp:try1 .
+docker build -f dockerfile_ros1_tortoisebot_webapp -t tortoisebot-ros1-webapp:try1 .
 ```
 
 and run
 
 ```
-docker run --rm -it -p 8001:80 docker_ros1_tortoisebot_webapp:try1
+docker run --rm -it -p 8001:80 tortoisebot-ros1-webapp:try1
 ```
 
 Terminal 7 tf2_web server

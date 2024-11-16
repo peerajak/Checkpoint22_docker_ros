@@ -1,4 +1,4 @@
-FROM docker_ros1_tortoisebot_gazebo:try1
+FROM tortoisebot-ros1-gazebo:try1
 
 COPY ./keyboard /etc/default/keyboard
 
