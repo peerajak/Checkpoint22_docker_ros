@@ -1,15 +1,15 @@
 version: '3.7'
 services:
 
-  tortoisebot-sim:
-    image: tortoisebot-ros1-gazebo:try1
+  tortoisebot-ros2-sim:
+    image: tortoisebot-ros2-gazebo:try1
     container_name: tortoisebot-gazebo
     network_mode: host
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
       - DISPLAY=${DISPLAY} 
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch --wait tortoisebot_gazebo tortoisebot_playground.launch"
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && ros2 launch tortoisebot_bringup bringup.launch.py use_sim_time:=True"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix        
     deploy:
@@ -21,51 +21,6 @@ services:
             capabilities: [gpu]
 
 
-  tf2_webbridge_action_server:
-    image: tortoisebot-ros1-waypoints:try1
-    container_name: tf2_webbridge_action_server   
-    network_mode: host
-    depends_on:
-     tortoisebot-sim:
-       condition: service_started
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
-    command: "/tortoisebot_ws/entrypoint.sh"
-
-
-  tortoisebot-slam:
-    image: tortoisebot-ros1-slam:try1
-    container_name: tortoisebot-slam
-    network_mode: host
-    depends_on:
-      tf2_webbridge_action_server:
-        condition: service_started
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
-      - DISPLAY=${DISPLAY} 
-    command: "/tortoisebot_ws/entrypoint.sh"
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix 
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: 1
-            capabilities: [gpu]
-
-  web-server:
-    image: tortoisebot-ros1-webapp:try1
-    container_name: web-server
-    network_mode: host
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
-    ports:
-      - 8001:8001
-    command: "entrypoint.sh"
 
 
 
