@@ -1,9 +1,9 @@
-FROM peerajakcp22/tortoisebot-ros1-gazebo:v1
+FROM peerajakcp22/tortoisebot-ros1-realrobot-gazebo:try1
 
 COPY ./keyboard /etc/default/keyboard
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ros-noetic-dwa-local-planner 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ros-noetic-ira-laser-tools ros-noetic-teleop-twist-keyboard python3-wstool python3-rosdep ninja-build stow 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ros-noetic-ira-laser-tools ros-noetic-teleop-twist-keyboard python3-wstool python3-rosdep ninja-build stow libraspberrypi-dev libraspberrypi0
 
 RUN mkdir /tortoisebot_ws/carto_ws && \
 cd /tortoisebot_ws/carto_ws && \
@@ -22,12 +22,16 @@ git clone https://github.com/ros-perception/pcl_msgs && \
 git clone -b noetic-devel https://github.com/jsk-ros-pkg/geometry2_python3.git 
 
 RUN cd /tortoisebot_ws/carto_ws && \
-rosdep install --from-paths src --ignore-src --rosdistro=noetic -y && \
-src/cartographer/scripts/install_abseil.sh
+rosdep install --from-paths src --ignore-src --rosdistro=noetic -y 
+RUN  cd /tortoisebot_ws/carto_ws && src/cartographer/scripts/install_abseil.sh 
 
-RUN cd /tortoisebot_ws/carto_ws &&  source /tortoisebot_ws/devel/setup.bash &&catkin_make_isolated --install --use-ninja -j3 -l3 
+# RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libpthread-stubs0-dev
+
+ENV LD_LIBRARY_PATH='/opt/ros/noetic/lib'
+
+RUN cd /tortoisebot_ws/carto_ws && source /opt/ros/noetic/setup.bash && catkin_make_isolated --install --use-ninja -j1 -l1 #<-at this position
 RUN cd /tortoisebot_ws  && rm -rf devel install install_isolated devel_isolated 
-RUN source /opt/ros/noetic/setup.bash && catkin_make -j3 -l3  
+RUN source /opt/ros/noetic/setup.bash && catkin_make -j1 -l1  
 
 RUN source /tortoisebot_ws/devel/setup.bash 
 RUN source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash

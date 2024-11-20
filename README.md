@@ -491,3 +491,78 @@ My computer's web video address
 ```
 http://127.0.0.1:11315/stream_viewer?topic=/raspicam_node/image
 ```
+
+## Task 2
+
+
+### Gazebo
+
+build (if required)
+
+```
+cp /etc/default/keyboard .
+docker build -f dockerfile_ros2_tortoisebot_gazebo -t tortoisebot-ros2-gazebo:try1 .
+```
+
+Terminal 1 Roscore and Gazebo
+
+```
+xhost +local:root
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros2-gazebo:try1 bash
+```
+
+
+### Slam
+
+build (if required)
+
+```
+cp /etc/default/keyboard .
+docker build -f dockerfile_ros2_tortoisebot_slam -t tortoisebot-ros2-slam:try1 .
+```
+
+Terminal 1 Roscore and Gazebo
+
+```
+xhost +local:root
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros2-slam:try1 bash
+```
+
+
+### Real Robot Ros1
+
+the OS of the tortoisebot is
+
+```
+tortoisebot@ubuntu:~/ros1_ws/src/tortoisebot/raspicam_node/launch$ uname -a
+Linux ubuntu 5.4.0-1119-raspi #131-Ubuntu SMP PREEMPT Thu Oct 10 17:28:35 UTC 2024 aarch64 aarch64 aarch64 GNU/Linux
+
+tortoisebot@ubuntu:~$ cat /etc/lsb-release 
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=20.04
+DISTRIB_CODENAME=focal
+DISTRIB_DESCRIPTION="Ubuntu 20.04.6 LTS"
+```
+
+Therefore, we need to pull this docker image from docker hub
+
+``
+docker pull  --platform linux/arm64 arm64v8/ros:noetic-ros-core-focal
+```
+
+gpg2 --gen-key
+This will generate a lot of info. but the important info is GPG KEY, which is a piece of code under pub topic control-c to copy the GPG-KEY
+pass init <GPG-KEY>
+docker login -u peerajakcp22
+(venv) peerajak@peerajak-desktop-intel:~/MyRobotics/Checkpoint22/Checkpoint22_docker_ros/tortoisebot_ros1_docker$ docker tag tortoisebot-ros1-gazebo:try1 peerajakcp22/tortoisebot-ros1-gazebo:v1
+(venv) peerajak@peerajak-desktop-intel:~/MyRobotics/Checkpoint22/Checkpoint22_docker_ros/tortoisebot_ros1_docker$ docker push peerajakcp22/tortoisebot-ros1-gazebo:v1
+```
+
+build for arm64v8
+
+```
+docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot_gazebo --push -t peerajakcp22/helloworld_arm64v8:1.0 .
+```
+
+sudo docker pull peerajakcp22/helloworld_arm64v8:1.0
+
