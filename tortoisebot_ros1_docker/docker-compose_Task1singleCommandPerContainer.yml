@@ -9,7 +9,7 @@ services:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
       - DISPLAY=${DISPLAY} 
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch --wait tortoisebot_gazebo tortoisebot_playground.launch"
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix        
     deploy:
