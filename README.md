@@ -218,7 +218,7 @@ Terminal 1 Roscore and Gazebo
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:v1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host peerajakcp22/tortoisebot-ros1-gazebo:v1 bash
 ```
 
 Inside docker
@@ -231,7 +231,7 @@ Terminal 2 sensors
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:v1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host peerajakcp22/tortoisebot-ros1-gazebo:v1 bash
 ```
 
 Inside Docker
@@ -244,7 +244,7 @@ Terminal 3 Teleopt
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:v1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host peerajakcp22/tortoisebot-ros1-gazebo:v1 bash
 ```
 
 Inside Docker
@@ -266,7 +266,7 @@ Terminal 1 Roscore and Gazebo
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:v1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host peerajakcp22/tortoisebot-ros1-gazebo:v1 bash
 ```
 
 Inside docker
@@ -286,7 +286,7 @@ docker build -f dockerfile_ros1_tortoisebot_slam -t tortoisebot-ros1-slam:v1 .
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-slam:v1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host peerajakcp22/tortoisebot-ros1-slam:v1 bash
 ```
 
 Check Overlay workspace
@@ -313,7 +313,7 @@ Terminal 3 Slam
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-slam:v1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host peerajakcp22/tortoisebot-ros1-slam:v1 bash
 ```
 
 Inside Docker
@@ -354,7 +354,7 @@ docker build -f dockerfile_ros1_tortoisebot_gazebo_playground -t tortoisebot-ros
 run
 
 ```
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:playground
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host peerajakcp22/tortoisebot-ros1-gazebo:playground
 ```
 Terminal 2 Rosbridge 
 
@@ -381,7 +381,7 @@ docker build -f dockerfile_ros1_tortoisebot_waypoint -t tortoisebot-ros1-waypoin
 run
 
 ```
-docker run -it --net=host tortoisebot-ros1-waypoints:v1
+docker run -it --net=host peerajakcp22/tortoisebot-ros1-waypoints:v1
 ```
 
 Terminal 3 Server Bring-up
