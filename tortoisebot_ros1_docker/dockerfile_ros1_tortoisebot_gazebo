@@ -20,5 +20,6 @@ RUN source /opt/ros/noetic/setup.bash \
  && catkin_make
 RUN echo "source /tortoisebot_ws/devel/setup.bash" >> ~/.bashrc
 
+
 # Set the working folder at startup
 WORKDIR /tortoisebot_ws

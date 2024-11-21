@@ -1,4 +1,4 @@
-FROM peerajakcp22/tortoisebot-ros1-realrobot-gazebo:try1
+FROM peerajakcp22/tortoisebot-ros1-realrobot-gazebo:v1
 
 COPY ./keyboard /etc/default/keyboard
 

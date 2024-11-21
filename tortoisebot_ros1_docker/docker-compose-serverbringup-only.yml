@@ -3,7 +3,7 @@ services:
 
 
   tortoisebot-serverbringup:
-    image: tortoisebot-ros1-slam:try1
+    image: tortoisebot-ros1-slam:v1
     container_name: tortoisebot-serverbringup
     network_mode: host
     environment:

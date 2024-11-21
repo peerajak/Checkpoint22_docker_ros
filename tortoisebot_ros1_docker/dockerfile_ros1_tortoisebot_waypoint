@@ -55,6 +55,6 @@ COPY ./entrypoint_waypoint.sh /tortoisebot_ws/entrypoint.sh
 # rosrun course_web_dev_ros tortoisebot_action_server.py & roslaunch course_web_dev_ros tf2_web.launch & roslaunch course_web_dev_ros web.launch
 # ENTRYPOINT ["/bin/bash", "-c", "source /tortoisebot_ws/devel/setup.bash && roslaunch course_web_dev_ros web.launch"]
 
-#tortoisebot-ros1-waypoints:try1
+#tortoisebot-ros1-waypoints:v1
 
 

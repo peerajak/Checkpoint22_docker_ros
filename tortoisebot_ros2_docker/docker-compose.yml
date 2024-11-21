@@ -2,7 +2,7 @@ version: '3.7'
 services:
 
   tortoisebot-ros2-sim:
-    image: tortoisebot-ros2-gazebo:try1
+    image: tortoisebot-ros2-gazebo:v1
     container_name: tortoisebot-gazebo
     network_mode: host
     environment:

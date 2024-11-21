@@ -1,4 +1,4 @@
-FROM tortoisebot-ros1-gazebo:try1
+FROM tortoisebot-ros1-gazebo:v1
 
 COPY ./keyboard /etc/default/keyboard
 

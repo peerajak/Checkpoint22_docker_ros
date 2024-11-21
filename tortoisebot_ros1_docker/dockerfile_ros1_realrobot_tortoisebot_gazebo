@@ -15,10 +15,10 @@ RUN cd /tortoisebot_ws/src && git clone -b noetic https://github.com/rigbetellab
 
 
 # Build the Catkin workspace and ensure it's sourced
-#RUN source /opt/ros/noetic/setup.bash \
-# && cd /tortoisebot_ws \
-# && catkin_make
-#RUN echo "source /tortoisebot_ws/devel/setup.bash" >> ~/.bashrc
+RUN source /opt/ros/noetic/setup.bash \
+ && cd /tortoisebot_ws \
+ && catkin_make
+RUN echo "source /tortoisebot_ws/devel/setup.bash" >> ~/.bashrc
 
 # Set the working folder at startup
 WORKDIR /tortoisebot_ws

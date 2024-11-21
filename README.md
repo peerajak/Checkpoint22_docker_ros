@@ -186,7 +186,7 @@ tortoisebot@ubuntu:~$ uname -r
 Terminal 1
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_gazebo -t tortoisebot-ros1-gazebo:try1 .
+docker build -f dockerfile_ros1_tortoisebot_gazebo -t tortoisebot-ros1-gazebo:v1 .
 ```
 
 1.2. Test Rviz, and tortoisebot Gazebo
@@ -195,7 +195,7 @@ Terminal 1
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all tortoisebot-ros1-gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all tortoisebot-ros1-gazebo:v1 bash
 ```
 
    
@@ -218,7 +218,7 @@ Terminal 1 Roscore and Gazebo
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:v1 bash
 ```
 
 Inside docker
@@ -231,7 +231,7 @@ Terminal 2 sensors
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:v1 bash
 ```
 
 Inside Docker
@@ -244,7 +244,7 @@ Terminal 3 Teleopt
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:v1 bash
 ```
 
 Inside Docker
@@ -259,14 +259,14 @@ Terminal 1 Build the image
 
 ```
 cp /etc/default/keyboard .
-docker build -f dockerfile_ros1_tortoisebot_slam -t tortoisebot-ros1-slam:try1 .
+docker build -f dockerfile_ros1_tortoisebot_slam -t tortoisebot-ros1-slam:v1 .
 ```
 
 Terminal 1 Roscore and Gazebo
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-gazebo:v1 bash
 ```
 
 Inside docker
@@ -281,12 +281,12 @@ build the docker
 
 ```
 cp /etc/default/keyboard .
-docker build -f dockerfile_ros1_tortoisebot_slam -t tortoisebot-ros1-slam:try1 .
+docker build -f dockerfile_ros1_tortoisebot_slam -t tortoisebot-ros1-slam:v1 .
 ```
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-slam:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-slam:v1 bash
 ```
 
 Check Overlay workspace
@@ -313,7 +313,7 @@ Terminal 3 Slam
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-slam:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros1-slam:v1 bash
 ```
 
 Inside Docker
@@ -328,13 +328,13 @@ Inside Docker
 Terminal 1 Build the image
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_webapp -t tortoisebot-ros1-webapp:try1 .
+docker build -f dockerfile_ros1_tortoisebot_webapp -t tortoisebot-ros1-webapp:v1 .
 ```
 
 then run the image
 
 ```
-docker run --rm -it -p 8001:80 tortoisebot-ros1-webapp:try1 
+docker run --rm -it -p 8001:80 tortoisebot-ros1-webapp:v1 
 ```
 -p host_port:container_port
 
@@ -376,12 +376,12 @@ or using docker
 
 build (if required)
 ```
-docker build -f dockerfile_ros1_tortoisebot_waypoint -t tortoisebot-ros1-waypoints:try1 .
+docker build -f dockerfile_ros1_tortoisebot_waypoint -t tortoisebot-ros1-waypoints:v1 .
 ```
 run
 
 ```
-docker run -it --net=host tortoisebot-ros1-waypoints:try1
+docker run -it --net=host tortoisebot-ros1-waypoints:v1
 ```
 
 Terminal 3 Server Bring-up
@@ -451,13 +451,13 @@ python -m http.server 8001
 or docker
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_webapp -t tortoisebot-ros1-webapp:try1 .
+docker build -f dockerfile_ros1_tortoisebot_webapp -t tortoisebot-ros1-webapp:v1 .
 ```
 
 and run
 
 ```
-docker run --rm -it -p 8001:80 tortoisebot-ros1-webapp:try1
+docker run --rm -it -p 8001:80 tortoisebot-ros1-webapp:v1
 ```
 
 Terminal 7 tf2_web server
@@ -501,14 +501,14 @@ build (if required)
 
 ```
 cp /etc/default/keyboard .
-docker build -f dockerfile_ros2_tortoisebot_gazebo -t tortoisebot-ros2-gazebo:try1 .
+docker build -f dockerfile_ros2_tortoisebot_gazebo -t tortoisebot-ros2-gazebo:v1 .
 ```
 
 Terminal 1 Roscore and Gazebo
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros2-gazebo:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros2-gazebo:v1 bash
 ```
 
 
@@ -518,14 +518,14 @@ build (if required)
 
 ```
 cp /etc/default/keyboard .
-docker build -f dockerfile_ros2_tortoisebot_slam -t tortoisebot-ros2-slam:try1 .
+docker build -f dockerfile_ros2_tortoisebot_slam -t tortoisebot-ros2-slam:v1 .
 ```
 
 Terminal 1 Roscore and Gazebo
 
 ```
 xhost +local:root
-docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros2-slam:try1 bash
+docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all --net=host tortoisebot-ros2-slam:v1 bash
 ```
 
 
@@ -554,7 +554,7 @@ gpg2 --gen-key
 This will generate a lot of info. but the important info is GPG KEY, which is a piece of code under pub topic control-c to copy the GPG-KEY
 pass init <GPG-KEY>
 docker login -u peerajakcp22
-(venv) peerajak@peerajak-desktop-intel:~/MyRobotics/Checkpoint22/Checkpoint22_docker_ros/tortoisebot_ros1_docker$ docker tag tortoisebot-ros1-gazebo:try1 peerajakcp22/tortoisebot-ros1-gazebo:v1
+(venv) peerajak@peerajak-desktop-intel:~/MyRobotics/Checkpoint22/Checkpoint22_docker_ros/tortoisebot_ros1_docker$ docker tag tortoisebot-ros1-gazebo:v1 peerajakcp22/tortoisebot-ros1-gazebo:v1
 (venv) peerajak@peerajak-desktop-intel:~/MyRobotics/Checkpoint22/Checkpoint22_docker_ros/tortoisebot_ros1_docker$ docker push peerajakcp22/tortoisebot-ros1-gazebo:v1
 ```
 
@@ -565,4 +565,32 @@ docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoise
 ```
 
 sudo docker pull peerajakcp22/helloworld_arm64v8:1.0
+
+
+## Trouble shooting
+
+if error like this
+
+```
+docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
+```
+
+and get error
+
+```
+docker: Cannot connect to the Docker daemon at unix:///home/peerajak/.docker/desktop/docker.sock. Is the docker daemon running?.
+See 'docker run --help'.
+
+```
+
+```
+export ROS_MASTER_URI=http://192.168.3.4:11311
+export ROS_HOSTNAME=192.168.3.12
+```
+
+do
+
+```
+docker context use default
+```
 
