@@ -35,6 +35,9 @@ RUN source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash
 RUN echo "source /tortoisebot_ws/devel/setup.bash" >> /root/.bashrc
 RUN echo "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash" >> /root/.bashrc
 
+ENV ROS_IP=192.168.3.4
+ENV ROS_MASTER_URI=http://192.168.3.4:11311
+ENV ROS_HOSTNAME=192.168.3.4
 
 
 # Set the working folder at startup

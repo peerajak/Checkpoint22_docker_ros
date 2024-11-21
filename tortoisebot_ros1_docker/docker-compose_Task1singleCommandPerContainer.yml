@@ -30,7 +30,7 @@ services:
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash &&roslaunch tortoisebot_firmware server_bringup.launch" 
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && sleep 3 &&roslaunch tortoisebot_firmware server_bringup.launch" 
 
 
   tortoisebot-slam:
@@ -44,7 +44,7 @@ services:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
       - DISPLAY=${DISPLAY} 
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && roslaunch tortoisebot_slam tortoisebot_slam.launch" 
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && sleep 3 &&roslaunch tortoisebot_slam tortoisebot_slam.launch" 
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix 
     deploy:
@@ -62,7 +62,7 @@ services:
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch course_web_dev_ros web.launch"
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && sleep 3 &&roslaunch course_web_dev_ros web.launch"
 
   tf2_web:
     image: peerajakcp22/tortoisebot-ros1-waypoints:v1
@@ -74,7 +74,7 @@ services:
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch course_web_dev_ros tf2_web.launch"
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && sleep 3 &&roslaunch course_web_dev_ros tf2_web.launch"
 
   action-server:
     image: peerajakcp22/tortoisebot-ros1-waypoints:v1
@@ -83,7 +83,7 @@ services:
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_DOMAIN_ID=1
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && rosrun course_web_dev_ros tortoisebot_action_server.py"
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && sleep 3 &&rosrun course_web_dev_ros tortoisebot_action_server.py"
 
   web-server:
     image: peerajakcp22/tortoisebot-ros1-webapp:v1

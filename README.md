@@ -466,6 +466,9 @@ Terminal 7 tf2_web server
 roslaunch course_web_dev_ros tf2_web.launch
 ```
 
+Open your web browser and goto http://localhost:8001
+
+
 #### RUN full web control Robot with docker-compose
 
 ```
@@ -567,6 +570,15 @@ docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoise
 sudo docker pull peerajakcp22/helloworld_arm64v8:1.0
 
 
+## Real Robot Ros1
+
+building on PC the real robot slam docker
+
+```
+docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot_slam_slam --push -t peerajakcp22/tortoisebot-ros1-realrobot-slam:slam .
+```
+
+
 ## Trouble shooting
 
 if error like this
@@ -593,4 +605,7 @@ do
 ```
 docker context use default
 ```
+
+
+
 
