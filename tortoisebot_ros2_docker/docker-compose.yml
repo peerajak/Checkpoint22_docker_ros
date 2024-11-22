@@ -20,6 +20,28 @@ services:
             count: 1
             capabilities: [gpu]
 
+  tortoisebot-ros2-slam:
+    image: peerajakcp22/tortoisebot-ros2-slam:v1
+    container_name: tortoisebot-ros2-slam
+    network_mode: host
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=1
+      - DISPLAY=${DISPLAY} 
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && ros2 launch tortoisebot_bringup autobringup.launch.py use_sim_time:=True exploration:=True"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix        
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
+
+
+
+
 
 
 

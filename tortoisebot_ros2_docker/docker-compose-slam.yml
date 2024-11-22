@@ -21,46 +21,6 @@ services:
             capabilities: [gpu]
 
 
-  rosbridge:
-    image: peerajakcp22/tortoisebot-ros1-waypoints:v1
-    container_name: rosbridge2
-    network_mode: host
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && sleep 3 &&roslaunch course_web_dev_ros web.launch"
-
-  tf2_web:
-    image: peerajakcp22/tortoisebot-ros1-waypoints:v1
-    container_name: tf2_web2
-    network_mode: host
-    depends_on:
-      tortoisebot-ros2-slam:
-        condition: service_started
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && sleep 3 &&roslaunch course_web_dev_ros tf2_web.launch"
-
-  action-server:
-    image: peerajakcp22/tortoisebot-ros1-waypoints:v1
-    container_name: action-server2
-    network_mode: host
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && sleep 3 &&rosrun course_web_dev_ros tortoisebot_action_server.py"
-
-  web-server:
-    image: peerajakcp22/tortoisebot-ros1-webapp:v1
-    container_name: web-server2
-    network_mode: host
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
-    ports:
-      - 8001:8001
-    command: "entrypoint.sh"
 
 
 
