@@ -31,21 +31,24 @@ ENV LD_LIBRARY_PATH='/opt/ros/noetic/lib'
 
 RUN cd /tortoisebot_ws/carto_ws && source /opt/ros/noetic/setup.bash && catkin_make_isolated --install --use-ninja -j1 -l1 #<-at this position
 RUN cd /tortoisebot_ws  && rm -rf devel install install_isolated devel_isolated 
+RUN apt-get install -y python3-rpi.gpio
+
 RUN source /opt/ros/noetic/setup.bash && catkin_make -j1 -l1  
 
-RUN source /tortoisebot_ws/devel/setup.bash 
 RUN source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash
+RUN source /tortoisebot_ws/devel/setup.bash 
 
-RUN echo "source /tortoisebot_ws/devel/setup.bash" >> /root/.bashrc
 RUN echo "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash" >> /root/.bashrc
+
+
 
 
 
 # Set the working folder at startup
 WORKDIR /tortoisebot_ws
-# COPY ./chain_setup.sh /tortoisebot_ws/
-# CMD ["source", "/tortoisebot_ws/chain_setup.sh"]
-
-COPY ./entrypoint_slam.sh /tortoisebot_ws/entrypoint.sh
+COPY ./chain_setup.sh /tortoisebot_ws/
 
 
+COPY ./camerav2_410x308_30fps.launch /tortoisebot_ws/src/tortoisebot/raspicam_node/launch/
+
+#CMD ["/bin/bash", "-c", "/tortoisebot_ws/entrypoint.sh"]

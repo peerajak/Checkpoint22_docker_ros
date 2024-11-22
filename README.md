@@ -561,21 +561,41 @@ docker login -u peerajakcp22
 (venv) peerajak@peerajak-desktop-intel:~/MyRobotics/Checkpoint22/Checkpoint22_docker_ros/tortoisebot_ros1_docker$ docker push peerajakcp22/tortoisebot-ros1-gazebo:v1
 ```
 
-build for arm64v8
+Open web browser and go to http://127.0.0.1:8001/
 
-```
-docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot_gazebo --push -t peerajakcp22/helloworld_arm64v8:1.0 .
-```
-
-sudo docker pull peerajakcp22/helloworld_arm64v8:1.0
 
 
 ## Real Robot Ros1
 
-building on PC the real robot slam docker
+building on PC the real robot slam docker. build for arm64v8
 
 ```
 docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot_slam_slam --push -t peerajakcp22/tortoisebot-ros1-realrobot-slam:slam .
+```
+
+logon to realrobot, then pull the image, run, and call the bringup
+
+```
+ssh tortoisebot@192.168.3.4
+docker pull peerajakcp22/tortoisebot-ros1-realrobot-slam:try1
+docker run -it --net=host --privileged peerajakcp22/tortoisebot-ros1-realrobot-slam:try1 bash
+# docker cp camerav2_410x308_30fps.launch  e6dbf17afd40:/tortoisebot_ws/src/tortoisebot/raspicam_node/launch # May be no need, as I should copy it beforehand
+noetic && roslaunch tortoisebot_firmware bringup.launch
+
+```
+
+Then run server_bringup.launch 
+
+```
+ssh tortoisebot@192.168.3.4
+roslaunch tortoisebot_firmware server_bringup.launch
+```
+
+Then in another terminal launch tortoisebot_slam.launch using:
+
+```
+ssh -X tortoisebot@192.168.3.4
+roslaunch tortoisebot_slam tortoisebot_slam.launch
 ```
 
 
@@ -607,5 +627,38 @@ docker context use default
 ```
 
 
+Make a brighter image file /tortoisebot_ws/src/tortoisebot/raspicam_node/launch/camerav2_410x308_30fps.launch
+
+```
+<launch>
+  <arg name="enable_raw" default="false"/>
+  <arg name="enable_imv" default="false"/>
+  <arg name="camera_id" default="0"/>
+  <arg name="camera_frame_id" default="camera"/>
+  <arg name="camera_name" default="camerav2_410x308"/>
+
+  <node type="raspicam_node" pkg="raspicam_node" name="raspicam_node" output="screen">
+    <param name="private_topics" value="true"/>
+    <param name="brightness" value="90" /> 
+    <param name="contrast" value="100" /> 
+    <param name="sharpness" value="47" />
+    <param name="saturation" value="1" />
+    <param name="exposure_compensation" value="-10" />
+    <param name="camera_frame_id" value="$(arg camera_frame_id)"/>
+    <param name="enable_raw" value="$(arg enable_raw)"/>
+    <param name="enable_imv" value="$(arg enable_imv)"/>
+    <param name="camera_id" value="$(arg camera_id)"/>
+
+    <param name="camera_info_url" value="package://raspicam_node/camera_info/camerav2_410x308.yaml"/>
+    <param name="camera_name" value="$(arg camera_name)"/>
+    <param name="width" value="410"/>
+    <param name="height" value="308"/>
+
+    <param name="framerate" value="30"/>
+    <param name="exposure_mode" value="antishake"/>
+    <param name="shutter_speed" value="0"/>
+  </node>
+</launch>
+```
 
 
