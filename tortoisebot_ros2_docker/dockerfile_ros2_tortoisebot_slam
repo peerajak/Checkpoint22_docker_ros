@@ -26,5 +26,5 @@ WORKDIR /ros2_ws
 
 
 # Gazenp and RVIZ slam
-ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/galactic/setup.bash && source /ros2_ws/install/setup.bash && ros2 launch tortoisebot_bringup autobringup.launch.py use_sim_time:=True exploration:=True"]
+#ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/galactic/setup.bash && source /ros2_ws/install/setup.bash && ros2 launch tortoisebot_bringup autobringup.launch.py use_sim_time:=True exploration:=True"]
 

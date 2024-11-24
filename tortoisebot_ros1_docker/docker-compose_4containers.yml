@@ -2,7 +2,7 @@ version: '3.7'
 services:
 
   tortoisebot-sim:
-    image: tortoisebot-ros1-gazebo:v1
+    image: peerajakcp22/tortoisebot-ros1-gazebo:v1
     container_name: tortoisebot-gazebo
     network_mode: host
     environment:
@@ -22,7 +22,7 @@ services:
 
 
   tf2_webbridge_action_server:
-    image: tortoisebot-ros1-waypoints:v1
+    image: peerajakcp22/tortoisebot-ros1-waypoints:v1
     container_name: tf2_webbridge_action_server   
     network_mode: host
     depends_on:
@@ -35,7 +35,7 @@ services:
 
 
   tortoisebot-slam:
-    image: tortoisebot-ros1-slam:v1
+    image: peerajakcp22/tortoisebot-ros1-slam:v1
     container_name: tortoisebot-slam
     network_mode: host
     depends_on:
@@ -57,7 +57,7 @@ services:
             capabilities: [gpu]
 
   web-server:
-    image: tortoisebot-ros1-webapp:v1
+    image: peerajakcp22/tortoisebot-ros1-webapp:v1
     container_name: web-server
     network_mode: host
     environment:

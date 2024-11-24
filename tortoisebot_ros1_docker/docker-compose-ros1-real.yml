@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+
+
+  tortoisebot-sim:
+    image: peerajakcp22/tortoisebot-ros1-real:v1
+    container_name: tortoisebot-gazebo
+    network_mode: host
+    privileged: true
+    command: bash -c "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && roslaunch tortoisebot_firmware bringup.launch"
+
+  tortoisebot-slam:
+    image: peerajakcp22/tortoisebot-ros1-real:v1
+    container_name: tortoisebot-slam
+    network_mode: host
+    privileged: true
+    depends_on:
+     tortoisebot-sim:
+       condition: service_started
+    command: bash -c "sleep 3 && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && roslaunch tortoisebot_firmware server_bringup.launch"
+
+
+
+
+

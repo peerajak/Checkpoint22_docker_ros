@@ -20,12 +20,26 @@ services:
             count: 1
             capabilities: [gpu]
 
+
+  tf2_webbridge_action_server:
+    image: peerajakcp22/tortoisebot-ros1-waypoints:v1
+    container_name: tf2_webbridge_action_server   
+    network_mode: host
+    depends_on:
+     tortoisebot-sim:
+       condition: service_started
+    environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_DOMAIN_ID=1
+    command: "/tortoisebot_ws/entrypoint.sh"
+
+
   tortoisebot-slam:
     image: peerajakcp22/tortoisebot-ros1-slam:v1
     container_name: tortoisebot-slam
     network_mode: host
     depends_on:
-      tortoisebot-sim:
+      tf2_webbridge_action_server:
         condition: service_started
     environment:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
@@ -41,21 +55,6 @@ services:
           - driver: nvidia
             count: 1
             capabilities: [gpu]
-
-  tf2_webbridge_action_server:
-    image: peerajakcp22/tortoisebot-ros1-waypoints:v1
-    container_name: tf2_webbridge_action_server   
-    network_mode: host
-    depends_on:
-     tortoisebot-slam:
-       condition: service_started
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
-    command: "/tortoisebot_ws/entrypoint.sh"
-
-
-
 
   web-server:
     image: peerajakcp22/tortoisebot-ros1-webapp:v1

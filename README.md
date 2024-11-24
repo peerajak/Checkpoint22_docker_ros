@@ -454,7 +454,7 @@ or docker
 docker build -f dockerfile_ros1_tortoisebot_webapp -t tortoisebot-ros1-webapp:v1 .
 ```
 
-and run
+and rungpu
 
 ```
 docker run --rm -it -p 8001:80 tortoisebot-ros1-webapp:v1
@@ -570,7 +570,9 @@ Open web browser and go to http://127.0.0.1:8001/
 building on PC the real robot slam docker. build for arm64v8
 
 ```
-docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot_slam_slam --push -t peerajakcp22/tortoisebot-ros1-realrobot-slam:slam .
+docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot_slam --push -t peerajakcp22/tortoisebot-ros1-real:v1 .
+docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot_slam --push -t peerajakcp22/tortoisebot-ros1-slam-real:v1 .
+docker run -it --net=host --privileged peerajakcp22/tortoisebot-ros1-slam-real:v1 
 ```
 
 logon to realrobot, then pull the image, run, and call the bringup
@@ -625,6 +627,32 @@ do
 ```
 docker context use default
 ```
+
+
+if error like this
+
+```
+Error response from daemon: could not select device driver "nvidia" with capabilities: [[gpu]]
+```
+
+do
+
+```
+docker context use default
+```
+
+if error like this
+
+```
+ [RenderEngine.cc:749] Can't open display: :0
+```
+
+do
+
+```
+xhost +local:root
+```
+
 
 
 Make a brighter image file /tortoisebot_ws/src/tortoisebot/raspicam_node/launch/camerav2_410x308_30fps.launch

@@ -29,17 +29,18 @@ RUN  cd /tortoisebot_ws/carto_ws && src/cartographer/scripts/install_abseil.sh
 
 ENV LD_LIBRARY_PATH='/opt/ros/noetic/lib'
 
-RUN cd /tortoisebot_ws/carto_ws && source /opt/ros/noetic/setup.bash && catkin_make_isolated --install --use-ninja -j1 -l1 #<-at this position
-RUN cd /tortoisebot_ws  && rm -rf devel install install_isolated devel_isolated 
 RUN apt-get install -y python3-rpi.gpio
 
+RUN source /opt/ros/noetic/setup.bash &&  cd /tortoisebot_ws/carto_ws && catkin_make_isolated --install --use-ninja -j1 -l1
+RUN cd /tortoisebot_ws/carto_ws && source devel_isolated/setup.bash --install --use-ninja -j1 -l1 #<-at this position
+RUN cd /tortoisebot_ws  && rm -rf devel install install_isolated devel_isolated 
 RUN source /opt/ros/noetic/setup.bash && catkin_make -j1 -l1  
 
 RUN source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash
-RUN source /tortoisebot_ws/devel/setup.bash 
+RUN source /tortoisebot_ws/devel/setup.bash --extend
 
 RUN echo "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash" >> /root/.bashrc
-
+RUN echo "source /tortoisebot_ws/devel/setup.bash --extend" >> /root/.bashrc
 
 
 
