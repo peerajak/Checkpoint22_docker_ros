@@ -565,7 +565,55 @@ Open web browser and go to http://127.0.0.1:8001/
 
 
 
-## Real Robot Ros1
+## Task3 Real Robot Ros1
+
+Terminal 1
+1. ssh to raspi 
+```
+ssh tortoisebot@192.168.3.4
+```
+
+2. inside Raspi prompt do
+
+```
+export ROS_MASTER_URI=http://raspi_ip:11311
+export ROS_HOSTNAME=raspi_ip
+```
+
+where raspi_ip is the tortoisebot's ip, and rviz_ip is the ip, which RVIZ will be called.
+
+3. docker-compose up
+
+```
+docker compose -f docker-compose-ros1-real.yml up
+```
+
+Terminal 2, at RVIZ IP
+
+1. 
+```
+export ROS_MASTER_URI=http://raspi_ip:11311
+export ROS_HOSTNAME=rviz_ip
+```
+where raspi_ip is the tortoisebot's ip, and rviz_ip is the ip, which RVIZ will be called.
+
+
+Case 1, do sensor
+
+```
+roslaunch tortoisebot_slam view_sensors.launch
+```
+Case 2, do slam
+
+```
+roslaunch tortoisebot_slam tortoisebot_slam.launch
+```
+
+
+
+
+
+
 
 building on PC the real robot slam docker. build for arm64v8
 
@@ -689,4 +737,19 @@ Make a brighter image file /tortoisebot_ws/src/tortoisebot/raspicam_node/launch/
 </launch>
 ```
 
+ROS 1 real robot, after compose up, got
+```
+tortoisebot-slam    | [ WARN] [1732443817.830965700]: W1124 10:23:37.000000    71 tf_bridge.cc:52] "base_link" passed to lookupTransform argument target_frame does not exist. 
+tortoisebot-slam    | [ WARN] [1732443817.960545124]: W1124 10:23:37.000000    71 range_data_collator.cc:82] Dropped 1 earlier points.
+tortoisebot-slam    | [ WARN] [1732443817.966402975]: W1124 10:23:37.000000    71 range_data_collator.cc:82] Dropped 1 earlier points.
+```
+
+This means that forgot to set ROS_MASTER_URI and ROS_HOSTNAME env variable
+
+do
+
+```
+export ROS_MASTER_URI=http://raspi_ip:11311
+export ROS_HOSTNAME=rviz_ip
+```
 
