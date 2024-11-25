@@ -6,6 +6,8 @@ SHELL [ "/bin/bash" , "-c" ]
 # Install Git
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git ros-galactic-joint-state-publisher ros-galactic-robot-state-publisher ros-galactic-cartographer ros-galactic-cartographer-ros ros-galactic-gazebo-plugins ros-galactic-teleop-twist-keyboard  ros-galactic-teleop-twist-joy ros-galactic-rviz2 ros-galactic-xacro ros-galactic-nav2* ros-galactic-urdf python3-colcon-common-extensions cmake pkg-config && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends build-essential
 
+RUN apt install -y ros-galactic-v4l2-camera python3-rpi.gpio
+
 # Create a Catkin workspace and clone Tortoisebot repos
 RUN source /opt/ros/galactic/setup.bash 
 RUN mkdir -p /ros2_ws/src 
@@ -18,14 +20,14 @@ RUN cd /ros2_ws/YDLidar-SDK/ &&  mkdir build && cd build/ && cmake .. && make &&
 RUN source /opt/ros/galactic/setup.bash && cd /ros2_ws/ && colcon build #--symlink-install
 RUN source /opt/ros/galactic/setup.bash
 RUN source /ros2_ws/install/setup.bash
-RUN echo "source /opt/ros/galactic/setup.bash" >> /root/.bashrc
-RUN echo "source /ros2_ws/install/setup.bash" >> /root/.bashrc
+#RUN echo "source /opt/ros/galactic/setup.bash" >> /root/.bashrc
+#RUN echo "source /ros2_ws/install/setup.bash" >> /root/.bashrc
 
 # Set the working folder at startup
 WORKDIR /ros2_ws
 
-RUN apt install -y ros-galactic-v4l2-camera
-RUN apt-get install -y python3-rpi.gpio
+RUN mkdir /var/lib/theconstruct.rrl
+COPY ./cyclonedds.xml /var/lib/theconstruct.rrl/
 
 # Gazenp and RVIZ slam
 #ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/galactic/setup.bash && source /ros2_ws/install/setup.bash && ros2 launch tortoisebot_bringup autobringup.launch.py use_sim_time:=False exploration:=True"]

@@ -7,17 +7,23 @@ services:
     container_name: tortoisebot-gazebo
     network_mode: host
     privileged: true
-    command: bash -c "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && roslaunch tortoisebot_firmware bringup.launch"
+    environment:
+        - ROS_MASTER_URI=http://192.168.3.4:11311
+        - ROS_HOSTNAME=192.168.3.4
+    command: bash -c "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && printenv | grep ROS && roslaunch tortoisebot_firmware bringup.launch"
 
   tortoisebot-slam:
     image: peerajakcp22/tortoisebot-ros1-real:v1
     container_name: tortoisebot-slam
     network_mode: host
     privileged: true
+    environment:
+        - ROS_MASTER_URI=http://192.168.3.4:11311
+        - ROS_HOSTNAME=192.168.3.4
     depends_on:
      tortoisebot-sim:
        condition: service_started
-    command: bash -c "sleep 3 && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && roslaunch tortoisebot_firmware server_bringup.launch"
+    command: bash -c "sleep 5 && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && printenv | grep ROS && roslaunch tortoisebot_firmware server_bringup.launch"
 
 
 

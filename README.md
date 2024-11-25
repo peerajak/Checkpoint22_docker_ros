@@ -648,6 +648,78 @@ ssh -X tortoisebot@192.168.3.4
 roslaunch tortoisebot_slam tortoisebot_slam.launch
 ```
 
+### Task 4 Ros2 Real robot
+
+The difficulty of Ros2 real robot is that the communication between ROS2 real robot docker and the host (which in my case, the non-docker robot's raspi.).
+We want to run rviz at the host, and bringup at the docker. If use net==host, I find the haphazard behavior where the topic does not show up.
+For example, suppose I run a docker whose base is ros2-focal, and without setting the correct environment variable, then suppose I publish a topic, says /turtlebot1/cmd_vel,
+normally if I go to a new terminal of the same docker, and do ros2 topic list, I should see a topic /turtlebot1/cmd_vel. But No. I see nothing except two default topics.
+If net==host option was omitted when I call up the docker, then this problem does not happen.
+
+The answer to this problem is to continue using net==host option, but setting 2 environment variables, and a file for docker to communicate with host.
+1. ROS_DOMAIN_ID=0, or any integer (not too big, i guess)
+2. CYCLONEDDS_URI=file:///var/lib/theconstruct.rrl/cyclonedds.xml, set both host and docker to be the same. 
+3. copy the content of the file /var/lib/theconstruct.rrl/cyclonedds.xml from host to docker. To do so, sometime I don't have vi at the docker, can use here document syntax
+
+```
+cat <<EOF > filename
+type what ever you want
+here until end
+when you end you write
+EOF
+```
+
+Once all these 3 steps are done, I try
+
+in docker
+
+```
+source /ros2_ws/install/setup.bash
+ros2 launch tortoisebot_bringup autobringup.launch.py use_sim_time:=False exploration:=True
+```
+
+on host raspi
+
+```
+galactic
+ros2 launch tortoisebot_description rviz.launch.py
+```
+
+If I see rviz not populate yet and looks like error on topic, please wait not longer than 1 min, everything should works properly.
+
+If I want to do another terminal on the same docker to move the robot 
+
+```
+docker exec -it <container_id> bash
+```
+
+this container id can be found using 
+
+```
+docker container ls
+```
+
+Once I arrive to the terminal of the same docker, the communication would not be set automatically, because the two environment variables are not yet set.
+do
+
+```
+export ROS_DOMAIN_ID=0
+export CYCLONEDDS_URI=file:///var/lib/theconstruct.rrl/cyclonedds.xml
+```
+
+then I can communicate with /cmd_vel or whatever topic I want.
+
+To build ROS2 real robot images
+
+```
+docker buildx build --platform linux/arm64 -f dockerfile_ros2_realrobot_tortoisebot --push -t peerajakcp22/tortoisebot-ros2-real:v1 .
+docker buildx build --platform linux/arm64 -f dockerfile_ros2_realrobot_tortoisebot --push -t peerajakcp22/tortoisebot-ros2-real-slam:v1 .
+```
+
+Yes. the two images share the same docker file.
+
+
+
 
 ## Trouble shooting
 
