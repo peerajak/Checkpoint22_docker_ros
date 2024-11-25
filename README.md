@@ -3,6 +3,193 @@
 In this checkpoint, I need to do tortoisebot on docker, meaning that simulation or realrobot bring up on docker, slam on docker, waypoint on docker, and webapp on docker for ROS1, and ROS2
 also I need to use docker-compose to do multiple launch of dockers in a single-shot.
 
+## Quick Guide 
+
+This quick guide assume that you have already installed docker, docker-compose, and related GPU drivers. If you follow this guide, and found problems, let me tell you one thing 
+"it works on my machine" :D Hahaha  (A joke that docker users understand)
+
+#### Task1 ROS1 simulation 
+
+Terminal 1
+
+```
+docker context use default
+xhost +local:root
+```
+cd to tortoisebot_ros1_docker,
+
+```
+cd tortoisebot_ros1_docker
+docker compose up
+```
+
+Open web browser and goto http://127.0.0.1:8001
+
+The expected result is shown in the pictures. There are 3 windows, 1 Gazebo, 1 Rviz with mapping, and 1 web browser
+
+![alt text](CP22_task1_sim_result.png)
+
+
+#### Task2 ROS2 simulation 
+
+Terminal 1
+
+```
+docker context use default
+xhost +local:root
+```
+cd to tortoisebot_ros1_docker,
+
+```
+cd tortoisebot_ros2_docker
+docker compose up
+```
+
+#### Task3 ROS1 real robot
+
+Terminal 1
+
+1. copy file to real robot
+
+```
+scp docker-compose-ros1-real.yml tortoisebot@raspi_ipv4:/home/tortoisebot/Documents
+```
+where raspi_ip is the tortoisebot's ip
+
+
+2. log on to your robot
+
+```
+ssh tortoisebot@aspi_ipv4
+```
+
+```
+cd Documents/
+```
+
+```
+docker compose -f docker-compose-ros1-real.yml up
+```
+
+Now the Robot had turn on, to view RVIZ sensor you may decide to use your working machine as RVIZ  machine, or to use robot raspi as RVIZ machine
+let me call this rviz_ip meaning RVIZ machine ip address. If you use robot raspi as RVIZ machine, don't forget to call 
+```
+noetic
+```
+so you may call rviz
+
+On you RVIZ machine 
+
+```
+export ROS_MASTER_URI=http://raspi_ip:11311
+export ROS_HOSTNAME=rviz_ip
+```
+
+Case 1, do sensor
+
+```
+roslaunch tortoisebot_slam view_sensors.launch
+```
+Case 2, do slam
+
+```
+roslaunch tortoisebot_slam tortoisebot_slam.launch
+```
+
+if you want to do teleopt while slam
+
+```
+docker exec -it <slam container_id> bash
+```
+
+this container id can be found using 
+
+```
+docker container ls
+```
+and choose one of the two, either tortoisebot-ros1-real-slam:v1, or real tortoisebot-ros1-real:v1
+
+Once you arrive to the terminal of the same docker, the communication would not be set automatically, because the two environment variables are not yet set.
+do
+
+```
+export ROS_MASTER_URI=http://raspi_ip:11311
+export ROS_HOSTNAME=rviz_ip
+source /tortoisebot_ws/devel/setup.bash
+```
+then I can communicate with all topics, thus do teleop
+
+```
+rosrun tortoisebot_control tortoisebot_teleop_key.py
+```
+![alt text](CP22_task3_result.png)
+![alt text](CP22_task3_result2.png)
+
+If you did not get the same result, remember this works on my machine   
+.
+.
+hahaha :D
+
+
+### Task 4 Ros2 
+```
+ssh tortoisebot@aspi_ipv4
+```
+
+```
+cd Documents/
+```
+
+```
+docker compose -f docker-compose-ros2-real.yml up
+```
+
+on RVIZ machine
+
+```
+galactic
+export ROS_DOMAIN_ID=1
+export CYCLONEDDS_URI=file:///var/lib/theconstruct.rrl/cyclonedds.xml
+ros2 launch tortoisebot_description rviz.launch.py
+```
+
+in RVIZ
+if you want to see the sensor
+choose Displays->Global options->Fixed Frame=base_link 
+
+if you want to see the costmap and do slam
+choose Displays->Global options->Fixed Frame=map
+
+If you want to do another terminal on the same docker to move the robot 
+
+```
+docker exec -it <slam container_id> bash
+```
+
+this container id can be found using 
+
+```
+docker container ls
+```
+and choose the one that is running slam
+
+Once you arrive to the terminal of the same docker, the communication would not be set automatically, because the two environment variables are not yet set.
+do
+
+```
+export ROS_DOMAIN_ID=1
+export CYCLONEDDS_URI=file:///var/lib/theconstruct.rrl/cyclonedds.xml
+source /ros2_ws/install/setup.bash
+```
+
+then I can communicate with all topics, thus do teleop
+
+```
+ros2 run teleop_twist_keyboard teleop_twist_keyboard 
+```
+
+![alt text](CP_22_result_task4.png)
+
 ## Docker Installation for NVIDIA graphic card user
 
 
@@ -823,5 +1010,18 @@ do
 ```
 export ROS_MASTER_URI=http://raspi_ip:11311
 export ROS_HOSTNAME=rviz_ip
+```
+
+if you see 
+
+```
+tortoisebot-gazebo           | No protocol specified
+tortoisebot-gazebo           | No protocol specified
+```
+
+you need
+
+```
+xhost +local:root
 ```
 
