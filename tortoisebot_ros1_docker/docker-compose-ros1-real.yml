@@ -13,7 +13,7 @@ services:
     command: bash -c "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && printenv | grep ROS && roslaunch tortoisebot_firmware bringup.launch"
 
   tortoisebot-slam:
-    image: peerajakcp22/tortoisebot-ros1-real:v1
+    image: peerajakcp22/tortoisebot-ros1-real-slam:v1
     container_name: tortoisebot-slam
     network_mode: host
     privileged: true
