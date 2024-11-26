@@ -515,7 +515,7 @@ Inside Docker
 Terminal 1 Build the image
 
 ```
-docker build -f dockerfile_ros1_tortoisebot_webapp -t tortoisebot-ros1-webapp:v1 .
+docker build -f dockerfile_ros1_tortoisebot_webapp -t peerajakcp22/tortoisebot-ros1-webapp:v1 .
 ```
 
 then run the image

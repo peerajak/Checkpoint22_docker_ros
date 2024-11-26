@@ -4,68 +4,72 @@ services:
   tortoisebot-sim:
     image: peerajakcp22/tortoisebot-ros1-gazebo:v1
     container_name: tortoisebot-gazebo
-    network_mode: host
+    networks:
+      tortoisebot-ros1-bridge-network:
+        ipv4_address: 172.19.0.2
     environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
       - DISPLAY=${DISPLAY} 
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch --wait tortoisebot_gazebo tortoisebot_playground.launch"
+      - ROS_MASTER_URI=http://172.19.0.2:11311
+      - ROS_HOSTNAME=172.19.0.2
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix        
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: 1
-            capabilities: [gpu]
 
 
   tf2_webbridge_action_server:
     image: peerajakcp22/tortoisebot-ros1-waypoints:v1
     container_name: tf2_webbridge_action_server   
-    network_mode: host
+    networks:
+      tortoisebot-ros1-bridge-network:
+        ipv4_address: 172.19.0.3
     depends_on:
-     tortoisebot-sim:
-       condition: service_started
+      - tortoisebot-sim
     environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
+      - ROS_MASTER_URI=http://172.19.0.2:11311
+      - ROS_HOSTNAME=172.19.0.3
     command: "/tortoisebot_ws/entrypoint.sh"
 
 
   tortoisebot-slam:
     image: peerajakcp22/tortoisebot-ros1-slam:v1
     container_name: tortoisebot-slam
-    network_mode: host
+    networks:
+      tortoisebot-ros1-bridge-network:
+        ipv4_address: 172.19.0.4
     depends_on:
-      tf2_webbridge_action_server:
-        condition: service_started
+      - tf2_webbridge_action_server
     environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
-      - DISPLAY=${DISPLAY} 
+      - DISPLAY=${DISPLAY}
+      - ROS_MASTER_URI=http://172.19.0.2:11311
+      - ROS_HOSTNAME=172.19.0.4
     command: "/tortoisebot_ws/entrypoint.sh"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix 
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: 1
-            capabilities: [gpu]
+
 
   web-server:
     image: peerajakcp22/tortoisebot-ros1-webapp:v1
     container_name: web-server
-    network_mode: host
+    networks:
+      - tortoisebot-ros1-bridge-network 
     environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
+      - ROS_MASTER_URI=http://172.19.0.2:11311
+      - ROS_HOSTNAME=172.19.0.5
     ports:
-      - 8001:8001
+      - 7000:8001 # Host:Container port
+    networks:
+      tortoisebot-ros1-bridge-network:
+        ipv4_address: 172.19.0.5
     command: "entrypoint.sh"
+
+  
+networks:
+  tortoisebot-ros1-bridge-network:
+      driver: bridge
+      ipam:
+          driver: default
+          config:
+              - subnet: "172.19.0.0/16"
 
 
 
