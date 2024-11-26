@@ -22,11 +22,15 @@ services:
     networks:
       tortoisebot-ros1-bridge-network:
         ipv4_address: 172.19.0.3
+    ports:
+      - 9090:9090
+      - 11315:11315
     depends_on:
       - tortoisebot-sim
     environment:
       - ROS_MASTER_URI=http://172.19.0.2:11311
       - ROS_HOSTNAME=172.19.0.3
+      - SLOT_ROSBRIDGE_PORT=20001
     command: "/tortoisebot_ws/entrypoint.sh"
 
 
@@ -37,6 +41,7 @@ services:
       tortoisebot-ros1-bridge-network:
         ipv4_address: 172.19.0.4
     depends_on:
+      - tortoisebot-sim
       - tf2_webbridge_action_server
     environment:
       - DISPLAY=${DISPLAY}
@@ -50,8 +55,6 @@ services:
   web-server:
     image: peerajakcp22/tortoisebot-ros1-webapp:v1
     container_name: web-server
-    networks:
-      - tortoisebot-ros1-bridge-network 
     environment:
       - ROS_MASTER_URI=http://172.19.0.2:11311
       - ROS_HOSTNAME=172.19.0.5
@@ -60,6 +63,10 @@ services:
     networks:
       tortoisebot-ros1-bridge-network:
         ipv4_address: 172.19.0.5
+    depends_on:
+      - tortoisebot-sim
+      - tf2_webbridge_action_server
+      - tortoisebot-slam
     command: "entrypoint.sh"
 
   

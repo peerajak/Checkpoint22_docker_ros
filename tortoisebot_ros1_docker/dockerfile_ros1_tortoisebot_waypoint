@@ -46,7 +46,7 @@ WORKDIR /tortoisebot_ws
 #roslaunch tortoisebot_gazebo tortoisebot_playground.launch
 ENV ROS_DOMAIN_ID=1
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-ENV SLOT_ROSBRIDGE_PORT=9090 
+ENV SLOT_ROSBRIDGE_PORT=20001
 
 COPY ./entrypoint_waypoint.sh /tortoisebot_ws/entrypoint.sh
 

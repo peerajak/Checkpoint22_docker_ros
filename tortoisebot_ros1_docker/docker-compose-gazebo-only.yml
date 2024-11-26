@@ -2,22 +2,24 @@ version: '3.7'
 services:
 
   tortoisebot-sim:
-    image: tortoisebot-ros1-gazebo:v1
+    image: peerajakcp22/tortoisebot-ros1-gazebo:v1
     container_name: tortoisebot-gazebo
-    network_mode: host
+    networks:
+      tortoisebot-ros1-bridge-network:
+        ipv4_address: 172.19.0.2
     environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_DOMAIN_ID=1
       - DISPLAY=${DISPLAY} 
-    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch --wait tortoisebot_gazebo tortoisebot_playground.launch"
+      - ROS_MASTER_URI=http://172.19.0.2:11311
+      - ROS_HOSTNAME=172.19.0.2
+    command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix        
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - driver: nvidia
-            count: 1
-            capabilities: [gpu]
+      - /tmp/.X11-unix:/tmp/.X11-unix      
 
+networks:
+    tortoisebot-ros1-bridge-network:
+      driver: bridge
+      ipam:
+        driver: default
+        config:
+          - subnet: "172.19.0.0/16"
 
