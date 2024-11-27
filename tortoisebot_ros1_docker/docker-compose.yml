@@ -5,12 +5,13 @@ services:
     image: peerajakcp22/tortoisebot-ros1-gazebo:v1
     container_name: tortoisebot-gazebo
     networks:
-      tortoisebot-ros1-bridge-network:
-        ipv4_address: 172.19.0.2
+      - tortoisebot-ros1-bridge-network
+    ports:
+      - 11311:11311
+      - 11345:11345
     environment:
       - DISPLAY=${DISPLAY} 
-      - ROS_MASTER_URI=http://172.19.0.2:11311
-      - ROS_HOSTNAME=172.19.0.2
+      - ROS_HOSTNAME=tortoisebot-gazebo
     command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix        
@@ -20,17 +21,17 @@ services:
     image: peerajakcp22/tortoisebot-ros1-waypoints:v1
     container_name: tf2_webbridge_action_server   
     networks:
-      tortoisebot-ros1-bridge-network:
-        ipv4_address: 172.19.0.3
+      - tortoisebot-ros1-bridge-network
     ports:
       - 9090:9090
+      - 8080:8080
       - 11315:11315
     depends_on:
       - tortoisebot-sim
     environment:
-      - ROS_MASTER_URI=http://172.19.0.2:11311
-      - ROS_HOSTNAME=172.19.0.3
       - SLOT_ROSBRIDGE_PORT=20001
+      - ROS_MASTER_URI=http://tortoisebot-gazebo:11311
+      - ROS_HOSTNAME=tf2_webbridge_action_server 
     command: "/tortoisebot_ws/entrypoint.sh"
 
 
@@ -38,15 +39,14 @@ services:
     image: peerajakcp22/tortoisebot-ros1-slam:v1
     container_name: tortoisebot-slam
     networks:
-      tortoisebot-ros1-bridge-network:
-        ipv4_address: 172.19.0.4
+      - tortoisebot-ros1-bridge-network
     depends_on:
       - tortoisebot-sim
       - tf2_webbridge_action_server
     environment:
       - DISPLAY=${DISPLAY}
-      - ROS_MASTER_URI=http://172.19.0.2:11311
-      - ROS_HOSTNAME=172.19.0.4
+      - ROS_MASTER_URI=http://tortoisebot-gazebo:11311
+      - ROS_HOSTNAME=tortoisebot-slam
     command: "/tortoisebot_ws/entrypoint.sh"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix 
@@ -55,28 +55,23 @@ services:
   web-server:
     image: peerajakcp22/tortoisebot-ros1-webapp:v1
     container_name: web-server
-    environment:
-      - ROS_MASTER_URI=http://172.19.0.2:11311
-      - ROS_HOSTNAME=172.19.0.5
     ports:
       - 7000:8001 # Host:Container port
     networks:
-      tortoisebot-ros1-bridge-network:
-        ipv4_address: 172.19.0.5
+      - tortoisebot-ros1-bridge-network
     depends_on:
       - tortoisebot-sim
       - tf2_webbridge_action_server
       - tortoisebot-slam
+    environment:
+      - ROS_MASTER_URI=http://tortoisebot-gazebo:11311
+      - ROS_HOSTNAME=web-server
     command: "entrypoint.sh"
 
   
 networks:
   tortoisebot-ros1-bridge-network:
-      driver: bridge
-      ipam:
-          driver: default
-          config:
-              - subnet: "172.19.0.0/16"
+    driver: bridge
 
 
 

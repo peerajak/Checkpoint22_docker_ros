@@ -17,9 +17,11 @@ COPY ./entrypoint_webapp.sh /entrypoint.sh
 
 # If the consturct's server
 RUN git config --global http.sslverify false  && git clone -b main https://github.com/peerajak/Checkpoint21_WebdevRobotics.git tortoisebot_webapp && \
+sed -i 's/camera\/image_raw/raspicam_node\/image/' /tortoisebot_webapp/main.js && \
 cd tortoisebot_webapp && cp -r * /var/www/html
 
 RUN sed -i 's/80\ default_server/8001\ default_server/' /etc/nginx/sites-enabled/default
+
 
 # /bin/bash is the command we want to execute when running a docker container
 ENTRYPOINT ["/bin/bash"]
