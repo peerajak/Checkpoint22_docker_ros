@@ -23,7 +23,7 @@ services:
     depends_on:
      tortoisebot-sim:
        condition: service_started
-    command: bash -c "sleep 5 && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && printenv | grep ROS && roslaunch tortoisebot_firmware server_bringup.launch"
+    command: bash -c "sleep 5 && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && printenv | grep ROS && roslaunch tortoisebot_firmware --wait server_bringup.launch"
 
 
 
