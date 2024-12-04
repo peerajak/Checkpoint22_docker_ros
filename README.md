@@ -74,6 +74,8 @@ then inside the container prompt, do
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 
+![alt text](CP22_task2_sim.png)
+
 #### Task3 ROS1 real robot
 
 Terminal 1
