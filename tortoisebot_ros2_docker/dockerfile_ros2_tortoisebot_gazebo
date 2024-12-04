@@ -15,6 +15,14 @@ RUN cd /ros2_ws/src && git clone -b ros2-galactic https://github.com/rigbetellab
 RUN cd /ros2_ws/ && git clone https://github.com/YDLIDAR/YDLidar-SDK.git
 RUN cd /ros2_ws/YDLidar-SDK/ &&  mkdir build && cd build/ && cmake .. && make && make install
 # RUN cd /ros2_ws/src/tortoisebot && rm -rf ydlidar-ros2 && git clone https://github.com/YDLIDAR/ydlidar_ros2_driver.git 
+RUN sed -i 's/rviz_launch_cmd,/\# rviz_launch_cmd,/' /ros2_ws/src/tortoisebot/tortoisebot_bringup/launch/bringup.launch.py
+RUN sed -i 's/state_publisher_launch_cmd,/# state_publisher_launch_cmd,/'    /ros2_ws/src/tortoisebot/tortoisebot_bringup/launch/autobringup.launch.py
+RUN sed -i 's/robot_state_publisher_node,/# robot_state_publisher_node,/'   /ros2_ws/src/tortoisebot/tortoisebot_bringup/launch/autobringup.launch.py
+RUN sed -i 's/joint_state_publisher_node,/# joint_state_publisher_node,/'   /ros2_ws/src/tortoisebot/tortoisebot_bringup/launch/autobringup.launch.py
+RUN sed -i 's/ydlidar_launch_cmd,/# ydlidar_launch_cmd,/'        /ros2_ws/src/tortoisebot/tortoisebot_bringup/launch/autobringup.launch.py
+RUN sed -i 's/differential_drive_node,/# differential_drive_node,/'   /ros2_ws/src/tortoisebot/tortoisebot_bringup/launch/autobringup.launch.py
+RUN sed -i 's/gazebo_launch_cmd,/# gazebo_launch_cmd,/'   /ros2_ws/src/tortoisebot/tortoisebot_bringup/launch/autobringup.launch.py
+RUN sed -i 's/camera_node$/# camera_node\n/'  /ros2_ws/src/tortoisebot/tortoisebot_bringup/launch/autobringup.launch.py
 RUN source /opt/ros/galactic/setup.bash && cd /ros2_ws/ && colcon build #--symlink-install
 RUN source /opt/ros/galactic/setup.bash
 RUN source /ros2_ws/install/setup.bash
@@ -24,6 +32,9 @@ RUN echo "source /ros2_ws/install/setup.bash" >> /root/.bashrc
 # Set the working folder at startup
 WORKDIR /ros2_ws
 
+
+
+RUN apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install vim
 # Gazebo and RVIZ only: ros2 launch tortoisebot_bringup bringup.launch.py use_sim_time:=True
 #ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/galactic/setup.bash && source /ros2_ws/install/setup.bash && ros2 launch tortoisebot_bringup bringup.launch.py use_sim_time:=True"]
 
