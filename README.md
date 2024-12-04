@@ -45,6 +45,37 @@ cd tortoisebot_ros2_docker
 docker compose up
 ```
 
+Terminal 2: teleopt to do the mapping
+
+```
+docker container ls
+```
+
+The result should be 
+
+```
+user:~$ sudo docker container ls
+CONTAINER ID   IMAGE                                     COMMAND                  CREATED          STATUS         PORTS     NAMES
+cf9ed9ec97cd   peerajakcp22/tortoisebot-ros2-slam:v1     "/ros_entrypoint.sh …"   11 minutes ago   Up 7 minutes             tortoisebot-ros2-slam
+9f1ce4f5ef44   peerajakcp22/tortoisebot-ros2-gazebo:v1   "/ros_entrypoint.sh …"   11 minutes ago   Up 7 minutes             tortoisebot-ros2-gazebo
+```
+
+Choose ContainerID any of the two, either slam or gazebo
+
+then
+
+```
+sudo docker exec -it cf9ed9ec97cd  bash
+```
+
+then inside the container prompt, do
+
+```
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
+
+![alt text](CP22_task2_sim.png)
+
 #### Task3 ROS1 real robot
 
 Terminal 1
