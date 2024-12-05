@@ -80,15 +80,7 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 Terminal 1
 
-1. copy file to real robot
-
-```
-scp docker-compose-ros1-real.yml tortoisebot@raspi_ipv4:/home/tortoisebot/Documents
-```
-where raspi_ip is the tortoisebot's ip
-
-
-2. log on to your robot
+1. log on to your robot
 
 ```
 ssh tortoisebot@raspi_ipv4
@@ -96,14 +88,23 @@ ssh tortoisebot@raspi_ipv4
 
 ```
 cd Documents/
+git clone -b theconstruct https://github.com/peerajak/Checkpoint22_docker_ros.git
+cd Checkpoint22_docker_ros/tortoisebot_ros1_docker/
 ```
 
 ```
-docker compose -f docker-compose-ros1-real.yml up
+docker-compose -f docker-compose-ros1-real.yml up
 ```
 
 Now the Robot had turn on, to view RVIZ sensor you may decide to use your working machine as RVIZ  machine, or to use robot raspi as RVIZ machine
 let me call this rviz_ip meaning RVIZ machine ip address. If you use robot raspi as RVIZ machine, don't forget to call 
+
+Terminal 2: RVIZ machine
+
+```
+ssh -X -C tortoisebot@raspi_ipv4
+```
+
 ```
 noetic
 ```
@@ -115,6 +116,8 @@ On you RVIZ machine
 export ROS_MASTER_URI=http://raspi_ip:11311
 export ROS_HOSTNAME=rviz_ip
 ```
+
+install the ROS1 tortoisebot like https://github.com/rigbetellabs/tortoisebot/wiki/4.-ROS-Noetic
 
 Case 1, do sensor
 
@@ -153,6 +156,8 @@ then I can communicate with all topics, thus do teleop
 ```
 rosrun tortoisebot_control tortoisebot_teleop_key.py
 ```
+One can see the robot is moving, and the mapping in RVIZ also changing
+
 ![alt text](CP22_task3_result.png)
 ![alt text](CP22_task3_result2.png)
 
