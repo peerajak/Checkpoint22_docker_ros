@@ -107,11 +107,13 @@ where raspi_ip is the tortoisebot's ip
 2. log on to your robot
 
 ```
-ssh tortoisebot@aspi_ipv4
+ssh tortoisebot@raspi_ipv4
 ```
 
 ```
 cd Documents/
+git clone -b theconstruct https://github.com/peerajak/Checkpoint22_docker_ros.git
+cd Checkpoint22_docker_ros
 ```
 
 ```
@@ -180,34 +182,58 @@ hahaha :D
 
 ### Task 4 Ros2 
 ```
-ssh tortoisebot@aspi_ipv4
+ssh tortoisebot@raspi_ipv4
+```
+
+Terminal 1
+
+```
+ssh tortoisebot@raspi_ipv4
 ```
 
 ```
 cd Documents/
+git clone -b main https://github.com/peerajak/Checkpoint22_docker_ros.git
+cd Checkpoint22_docker_ros/tortoisebot_ros2_docker
+docker pull peerajakcp22/tortoisebot-ros2-real:v1
+docker pull peerajakcp22/tortoisebot-ros2-real-slam:v1
+
 ```
 
 ```
-docker-compose -f docker-compose-ros2-real.yml up
+docker compose -f docker-compose-ros2-real.yml up
 ```
 
-on RVIZ machine
+Terminal 2: RVIZ machine
+
+```
+ssh -X -C tortoisebot@raspi_ipv4
+```
+
+do local real robot ROS2 installation as describe by this website
+
+https://github.com/rigbetellabs/tortoisebot/wiki/5.-ROS2
+
+then
+
+```
+cd /
+sudo ln -s /home/tortoisebot/ros2_ws/ .
+```
 
 ```
 galactic
 export ROS_DOMAIN_ID=1
 export CYCLONEDDS_URI=file:///var/lib/theconstruct.rrl/cyclonedds.xml
-ros2 launch tortoisebot_description rviz.launch.py
+```
+
+```
+cd ~/Documents/Checkpoint22_docker_ros/tortoisebot_ros2_docker
+rviz2 -d tortoisebot_navigation.rviz
 ```
 
 in RVIZ
-if you want to see the sensor
-choose Displays->Global options->Fixed Frame=base_link 
-
-if you want to see the costmap and do slam
-choose Displays->Global options->Fixed Frame=map
-
-If you want to do another terminal on the same docker to move the robot 
+Make sure you open the image panel to see the camera
 
 ```
 docker exec -it <slam container_id> bash
@@ -234,6 +260,8 @@ then I can communicate with all topics, thus do teleop
 ```
 ros2 run teleop_twist_keyboard teleop_twist_keyboard 
 ```
+
+One can see the robot is moving, and the mapping in RVIZ also changing
 
 ![alt text](CP_22_result_task4.png)
 
