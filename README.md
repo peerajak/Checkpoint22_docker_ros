@@ -20,10 +20,26 @@ cd to tortoisebot_ros1_docker,
 
 ```
 cd tortoisebot_ros1_docker
-docker compose up
+docker-compose up
 ```
 
-Open web browser and goto http://127.0.0.1:8001
+Terminal 2
+
+```
+webpage_address
+```
+
+Click on the https address that returns from CLI or open web browser and goto such an address returned from CLI
+
+```
+rosbridge_address
+```
+
+Copy and paste the returned sentence to the rosbridge address input box, in the web browser above. If there exist a previous sentence in the input box, delete all previous sentence, and paste new sentence to the rosbridge address input box, then place the green "connect" button.
+if successful, the connection status changes from "not connected" to the word "connected", and the "connect" button changes to "disconnect" button.
+
+If connection is successful, you should see the map buttons become colorful, and see the robot modes, and maps(may delay), and also the real time moving image captured by robot camera. You can place a "WP1" button or other "WP<number>" on the map, and see the robot is moving in such direction on the gazebo, and the moving image is also moving.
+
 
 The expected result is shown in the pictures. There are 3 windows, 1 Gazebo, 1 Rviz with mapping, and 1 web browser
 
@@ -99,7 +115,7 @@ cd Documents/
 ```
 
 ```
-docker compose -f docker-compose-ros1-real.yml up
+docker-compose -f docker-compose-ros1-real.yml up
 ```
 
 Now the Robot had turn on, to view RVIZ sensor you may decide to use your working machine as RVIZ  machine, or to use robot raspi as RVIZ machine
@@ -172,7 +188,7 @@ cd Documents/
 ```
 
 ```
-docker compose -f docker-compose-ros2-real.yml up
+docker-compose -f docker-compose-ros2-real.yml up
 ```
 
 on RVIZ machine
@@ -690,7 +706,7 @@ Open your web browser and goto http://localhost:8001
 #### RUN full web control Robot with docker-compose
 
 ```
-docker compose up
+docker-compose up
 ```
 
 Helper commands
@@ -803,7 +819,7 @@ where raspi_ip is the tortoisebot's ip, and rviz_ip is the ip, which RVIZ will b
 3. docker-compose up
 
 ```
-docker compose -f docker-compose-ros1-real.yml up
+docker-compose -f docker-compose-ros1-real.yml up
 ```
 
 Terminal 2, at RVIZ IP
