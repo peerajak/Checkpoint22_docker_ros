@@ -129,7 +129,7 @@ so you may call rviz
 On you RVIZ machine 
 
 ```
-export ROS_MASTER_URI=http://raspi_ip:11311
+export ROS_MASTER_URI=http://raspi_ipv4:11311
 export ROS_HOSTNAME=rviz_ip
 ```
 
@@ -843,11 +843,17 @@ ssh tortoisebot@192.168.3.4
 2. inside Raspi prompt do
 
 ```
-export ROS_MASTER_URI=http://raspi_ip:11311
-export ROS_HOSTNAME=raspi_ip
+RASPI_IPV4=<Your Raspberry Pi IP>
+export ROS_MASTER_URI=http://$RASPI_IPV4:11311
+export ROS_HOSTNAME=rviz_ip
 ```
 
-where raspi_ip is the tortoisebot's ip, and rviz_ip is the ip, which RVIZ will be called.
+where raspi_ipv4 is the tortoisebot's ip, and rviz_ip is the ip, which RVIZ will be called. 
+if you are also calling rviz from Raspberry pi using ssh -X, then rviz_ip is also $RASPI_IPV4
+
+```
+export ROS_HOSTNAME=$RASPI_IPV4
+```
 
 3. docker-compose up
 
@@ -858,12 +864,19 @@ docker-compose -f docker-compose-ros1-real.yml up
 Terminal 2, at RVIZ IP
 
 1. 
+
 ```
-export ROS_MASTER_URI=http://raspi_ip:11311
+RASPI_IPV4=<Your Raspberry Pi IP>
+export ROS_MASTER_URI=http://$RASPI_IPV4:11311
 export ROS_HOSTNAME=rviz_ip
 ```
-where raspi_ip is the tortoisebot's ip, and rviz_ip is the ip, which RVIZ will be called.
 
+where raspi_ipv4 is the tortoisebot's ip, and rviz_ip is the ip, which RVIZ will be called. 
+if you are also calling rviz from Raspberry pi using ssh -X, then rviz_ip is also $RASPI_IPV4
+
+```
+export ROS_HOSTNAME=$RASPI_IPV4
+```
 
 Case 1, do sensor
 
@@ -1088,7 +1101,7 @@ This means that forgot to set ROS_MASTER_URI and ROS_HOSTNAME env variable
 do
 
 ```
-export ROS_MASTER_URI=http://raspi_ip:11311
+export ROS_MASTER_URI=http://raspi_ipv4:11311
 export ROS_HOSTNAME=rviz_ip
 ```
 
