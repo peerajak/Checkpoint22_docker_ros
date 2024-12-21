@@ -232,6 +232,8 @@ export CYCLONEDDS_URI=file:///var/lib/theconstruct.rrl/cyclonedds.xml
 
 ```
 cd ~/Documents/Checkpoint22_docker_ros/tortoisebot_ros2_docker
+mkdir -p /var/lib/theconstruct.rrl
+cp ~/Documents/Checkpoint22_docker_ros/tortoisebot_ros2_docker/cyclonedds.xml /var/lib/theconstruct.rrl
 rviz2 -d tortoisebot_navigation.rviz
 ```
 

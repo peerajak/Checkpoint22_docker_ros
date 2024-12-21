@@ -10,9 +10,9 @@ function install_deps {
     # -----------------------------------------------------------
     # Install docker, start it and add user to the 'docker' group
     # -----------------------------------------------------------
-    #sudo apt-get install -y docker.io docker-compose
-    #sudo service docker start
-    #sudo usermod -aG docker $USER
+    sudo apt-get install -y docker.io docker-compose x11-xserver-utils
+    sudo service docker start
+    sudo usermod -aG docker $USER
 }
 
 function point_python_to_python3 {
