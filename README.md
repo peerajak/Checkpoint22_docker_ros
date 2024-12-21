@@ -866,7 +866,7 @@ Terminal 2, at RVIZ IP
 1. 
 
 ```
-RASPI_IPV4=<Your Raspberry Pi IP>
+export RASPI_IPV4=<Your Raspberry Pi IP>
 export ROS_MASTER_URI=http://$RASPI_IPV4:11311
 export ROS_HOSTNAME=rviz_ip
 ```
