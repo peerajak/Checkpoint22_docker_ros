@@ -233,12 +233,14 @@ export CYCLONEDDS_URI=file:///var/lib/theconstruct.rrl/cyclonedds.xml
 ```
 cd ~/Documents/Checkpoint22_docker_ros/tortoisebot_ros2_docker
 mkdir -p /var/lib/theconstruct.rrl
-cp ~/Documents/Checkpoint22_docker_ros/tortoisebot_ros2_docker/cyclonedds.xml /var/lib/theconstruct.rrl
+sudo cp ~/Documents/Checkpoint22_docker_ros/tortoisebot_ros2_docker/cyclonedds.xml /var/lib/theconstruct.rrl
 rviz2 -d tortoisebot_navigation.rviz
 ```
 
 in RVIZ
 Make sure you open the image panel to see the camera
+
+Terminal 3: teleopt to move the robot to do mapping
 
 ```
 docker exec -it <slam container_id> bash
@@ -843,7 +845,7 @@ ssh tortoisebot@192.168.3.4
 2. inside Raspi prompt do
 
 ```
-RASPI_IPV4=<Your Raspberry Pi IP>
+export RASPI_IPV4=<Your Raspberry Pi IP>
 export ROS_MASTER_URI=http://$RASPI_IPV4:11311
 export ROS_HOSTNAME=rviz_ip
 ```
@@ -881,11 +883,13 @@ export ROS_HOSTNAME=$RASPI_IPV4
 Case 1, do sensor
 
 ```
+noetic
 roslaunch tortoisebot_slam view_sensors.launch
 ```
 Case 2, do slam
 
 ```
+noetic
 roslaunch tortoisebot_slam tortoisebot_slam.launch
 ```
 
