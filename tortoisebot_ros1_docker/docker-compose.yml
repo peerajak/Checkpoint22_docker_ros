@@ -12,6 +12,7 @@ services:
     environment:
       - DISPLAY=${DISPLAY} 
       - ROS_HOSTNAME=tortoisebot-gazebo
+      - ROS_MASTER_URI=http://tortoisebot-gazebo:11311
     command: bash -c "source /tortoisebot_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix        
