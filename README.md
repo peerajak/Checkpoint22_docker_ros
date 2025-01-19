@@ -13,15 +13,23 @@ This quick guide assume that you have already installed docker, docker-compose, 
 Terminal 1
 
 ```
-docker context use default
-xhost +local:root
+./course_install.sh
 ```
-cd to tortoisebot_ros1_docker,
 
 ```
-cd tortoisebot_ros1_docker
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo gpasswd -a $USER docker
+newgrp docker
+```
+
+```
+cd ~
+git clone https://github.com/peerajak/Checkpoint22_docker_ros.git
+cd ~/Checkpoint22_docker_ros/tortoisebot_ros1_docker
 docker-compose up
 ```
+
 
 Terminal 2
 
