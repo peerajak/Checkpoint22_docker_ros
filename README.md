@@ -902,9 +902,8 @@ roslaunch tortoisebot_slam tortoisebot_slam.launch
 building on PC the real robot slam docker. build for arm64v8
 
 ```
-docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot_slam --push -t peerajakcp22/tortoisebot-ros1-real:v1 .
-docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot_slam --push -t peerajakcp22/tortoisebot-ros1-slam-real:v1 .
-docker run -it --net=host --privileged peerajakcp22/tortoisebot-ros1-slam-real:v1 
+docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot --push -t peerajakcp22/tortoisebot-ros1-real:v2_5 .
+docker run -it --net=host --privileged peerajakcp22/tortoisebot-ros1-real:v2_5 
 ```
 
 logon to realrobot, then pull the image, run, and call the bringup
