@@ -72,6 +72,7 @@ cd ~
 sed -i 's/ROS_IPV6=on/ROS_IP='"$RASPI_IPV4"'/' .bashrc
 sed -i 's|ROS_MASTER_URI=http://master:11311|ROS_MASTER_URI=http://$ROS_IP:11311|' .bashrc
 sed -i 's/ROS_HOSTNAME=master/ROS_HOSTNAME=$ROS_IP/' .bashrc
+sed -i 's/export\ ROS_IPV6=on/#export\ ROS_IPV6=on/' .bashrc
 ```
 
 ```
