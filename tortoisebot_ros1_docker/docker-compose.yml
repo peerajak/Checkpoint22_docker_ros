@@ -48,7 +48,7 @@ services:
       - DISPLAY=${DISPLAY}
       - ROS_MASTER_URI=http://tortoisebot-gazebo:11311
       - ROS_HOSTNAME=tortoisebot-slam
-    command: "/tortoisebot_ws/entrypoint.sh"
+    command: bash -c "sleep 3 && /tortoisebot_ws/entrypoint.sh"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix 
 
