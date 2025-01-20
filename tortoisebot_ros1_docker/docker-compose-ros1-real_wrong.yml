@@ -1,0 +1,73 @@
+version: '3.7'
+services:
+
+
+  tortoisebot-sim:
+    image: peerajakcp22/tortoisebot-ros1-real:v2_5
+    container_name: tortoisebot-gazebo
+    privileged: true
+    #network_mode: host
+    networks:
+       - tortoisebot-ros1-bridge-network
+    ports:
+       - 11311:11311
+       - 11345:11345 
+       - 55817:55817
+       - 60201:60201
+       - 27017:27017
+       - 44431:44431
+       - 34223:34223
+       - 11311:11311
+       - 40401:40401
+       - 11345:11345
+       - 39315:39315
+       - 5939:5939
+       - 37173:37173
+       - 34197:34197
+       - 57335:57335
+       - 40343:40343
+       - 37591:37591
+       - 58041:58041
+       - 33691:33691
+       - 36059:36059
+       - 55229:55229
+       - 46847:46847
+       - 44191:44191
+       - 34949:34949
+       - 36775:36775      
+    environment:
+        #- DISPLAY=${DISPLAY} 
+        - ROS_MASTER_URI=http://tortoisebot-gazebo:11311 
+        - ROS_HOSTNAME=tortoisebot-gazebo 
+        #- ROS_MASTER_URI=http://${RASPI_IPV4}:11311        
+        #- ROS_HOSTNAME=${RASPI_IPV4}
+    command: bash -c "source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && printenv | grep ROS && roslaunch tortoisebot_firmware bringup.launch"
+    #volumes:
+    #  - /tmp/.X11-unix:/tmp/.X11-unix     
+
+  tortoisebot-slam:
+    image: peerajakcp22/tortoisebot-ros1-real:v2_5
+    container_name: tortoisebot-slam
+    privileged: false
+    #network_mode: host
+    networks:
+       - tortoisebot-ros1-bridge-network
+    environment:
+        #- DISPLAY=${DISPLAY} 
+        - ROS_MASTER_URI=http://tortoisebot-gazebo:11311      
+        - ROS_HOSTNAME=tortoisebot-slam 
+        #- ROS_MASTER_URI=http://${RASPI_IPV4}:11311
+        #- ROS_HOSTNAME=${RASPI_IPV4}
+    depends_on:
+     tortoisebot-sim:
+       condition: service_started
+    command: bash -c "sleep 5 && source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash && source /tortoisebot_ws/devel/setup.bash --extend && rospack list | grep -e tortoise -e carto && printenv | grep ROS && roslaunch tortoisebot_firmware --wait server_bringup.launch"
+    # volumes:
+    #   - /tmp/.X11-unix:/tmp/.X11-unix     
+
+
+networks:
+  tortoisebot-ros1-bridge-network:
+    driver: bridge
+
+
