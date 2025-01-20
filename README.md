@@ -171,6 +171,9 @@ Once you arrive to the terminal of the same docker, the communication would not 
 do
 
 ```
+cd ~
+sed -i 's/export\ ROS_IPV6=on/#export\ ROS_IPV6=on/' .bashrc
+. .bashrc
 export ROS_MASTER_URI=http://raspi_ip:11311
 export ROS_HOSTNAME=rviz_ip
 source /tortoisebot_ws/devel/setup.bash
@@ -203,12 +206,21 @@ ssh tortoisebot@raspi_ipv4
 ```
 
 ```
-cd Documents/
+cd ~
+sed -i 's/export\ ROS_IPV6=on/#export\ ROS_IPV6=on/' .bashrc
+. .bashrc
+cd ~/Documents/
 git clone -b main https://github.com/peerajak/Checkpoint22_docker_ros.git
-cd Checkpoint22_docker_ros/tortoisebot_ros2_docker
+cd ~/Documents/Checkpoint22_docker_ros/tortoisebot_ros2_docker/
 docker pull peerajakcp22/tortoisebot-ros2-real:v1
 docker pull peerajakcp22/tortoisebot-ros2-real-slam:v1
 
+```
+
+```
+galactic
+export ROS_DOMAIN_ID=1
+export CYCLONEDDS_URI=file:///var/lib/theconstruct.rrl/cyclonedds.xml
 ```
 
 ```
@@ -853,6 +865,10 @@ ssh tortoisebot@192.168.3.4
 2. inside Raspi prompt do
 
 ```
+noetic
+cd ~
+sed -i 's/export\ ROS_IPV6=on/#export\ ROS_IPV6=on/' .bashrc
+. .bashrc
 export RASPI_IPV4=<Your Raspberry Pi IP>
 export ROS_MASTER_URI=http://$RASPI_IPV4:11311
 export ROS_HOSTNAME=rviz_ip
@@ -868,6 +884,7 @@ export ROS_HOSTNAME=$RASPI_IPV4
 3. docker-compose up
 
 ```
+cd ~/Documents/Checkpoint22_docker_ros/tortoisebot_ros1_docker/
 docker-compose -f docker-compose-ros1-real.yml up
 ```
 
@@ -1127,5 +1144,13 @@ you need
 
 ```
 xhost +local:root
+```
+
+if rviz keep cannot connect to the self's ip, check that the ROS_IPv6 is turn off
+
+in .bashrc 
+
+```
+#export\ ROS_IPV6=on
 ```
 
