@@ -51,6 +51,7 @@ RUN apt-get install -y python3-rpi.gpio
 RUN source /opt/ros/noetic/setup.bash &&  cd /tortoisebot_ws/carto_ws && catkin_make_isolated --install --use-ninja -j1 -l1
 RUN cd /tortoisebot_ws/carto_ws && source devel_isolated/setup.bash --install --use-ninja -j1 -l1 #<-at this position
 RUN cd /tortoisebot_ws  && rm -rf devel install install_isolated devel_isolated 
+COPY ./tortoisebot_slam_real_no_rviz.launch /tortoisebot_ws/src/tortoisebot/tortoisebot_slam/launch
 RUN source /opt/ros/noetic/setup.bash &&  cd /tortoisebot_ws  &&  catkin_make -j1 -l1  
 
 RUN source /tortoisebot_ws/carto_ws/devel_isolated/setup.bash
@@ -65,7 +66,7 @@ RUN echo "source /tortoisebot_ws/devel/setup.bash --extend" >> /root/.bashrc
 # Set the working folder at startup
 WORKDIR /tortoisebot_ws
 COPY ./chain_setup.sh /tortoisebot_ws/
-
+COPY ./entrypoint_slam_real.sh /tortoisebot_ws/entrypoint.sh
 
 COPY ./camerav2_410x308_30fps.launch /tortoisebot_ws/src/tortoisebot/raspicam_node/launch/
 

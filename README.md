@@ -58,6 +58,19 @@ The expected result is shown in the pictures. There are 3 windows, 1 Gazebo, 1 R
 
 Terminal 1
 
+
+```
+./course_install.sh
+```
+
+```
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo gpasswd -a $USER docker
+newgrp docker
+```
+
+
 ```
 docker context use default
 xhost +local:root
@@ -65,11 +78,24 @@ xhost +local:root
 cd to tortoisebot_ros1_docker,
 
 ```
-cd tortoisebot_ros2_docker
+cd ~/Checkpoint22_docker_ros/tortoisebot_ros2_docker
 docker-compose up
 ```
 
 Terminal 2: teleopt to do the mapping
+
+
+```
+./course_install.sh
+```
+
+```
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo gpasswd -a $USER docker
+newgrp docker
+```
+
 
 ```
 docker container ls
@@ -90,6 +116,12 @@ then
 
 ```
 sudo docker exec -it cf9ed9ec97cd  bash
+```
+
+or 
+
+```
+sudo docker exec -it tortoisebot-ros2-slam  bash
 ```
 
 then inside the container prompt, do
@@ -151,7 +183,7 @@ roslaunch tortoisebot_slam view_sensors.launch
 Case 2, do slam
 
 ```
-roslaunch tortoisebot_slam tortoisebot_slam.launch
+rviz -d ros1_ws/src/tortoisebot/tortoisebot_slam/rviz/mapping.rviz
 ```
 
 if you want to do teleopt while slam
@@ -927,8 +959,8 @@ roslaunch tortoisebot_slam tortoisebot_slam.launch
 building on PC the real robot slam docker. build for arm64v8
 
 ```
-docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot --push -t peerajakcp22/tortoisebot-ros1-real:v2_5 .
-docker run -it --net=host --privileged peerajakcp22/tortoisebot-ros1-real:v2_5 
+docker buildx build --platform linux/arm64 -f dockerfile_ros1_realrobot_tortoisebot --push -t peerajakcp22/tortoisebot-ros1-real:v2_6 .
+docker run -it --net=host --privileged peerajakcp22/tortoisebot-ros1-real:v2_6 
 ```
 
 logon to realrobot, then pull the image, run, and call the bringup
