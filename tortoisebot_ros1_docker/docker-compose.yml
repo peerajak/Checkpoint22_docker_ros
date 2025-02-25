@@ -30,7 +30,7 @@ services:
     depends_on:
       - tortoisebot-sim
     environment:
-      - SLOT_ROSBRIDGE_PORT=20001
+      #- SLOT_ROSBRIDGE_PORT=20001
       - ROS_MASTER_URI=http://tortoisebot-gazebo:11311
       - ROS_HOSTNAME=tf2_webbridge_action_server 
     command: "/tortoisebot_ws/entrypoint.sh"
