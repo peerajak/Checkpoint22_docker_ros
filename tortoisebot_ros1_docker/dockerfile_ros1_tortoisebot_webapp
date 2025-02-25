@@ -12,8 +12,10 @@ RUN apt-get update \
 COPY ./entrypoint_webapp.sh /entrypoint.sh
 
 # If my computer
-RUN git config --global http.sslverify false  && git clone -b checkpoint22 https://github.com/peerajak/Checkpoint21_WebdevRobotics.git tortoisebot_webapp && \
-cd tortoisebot_webapp && cp -r * /var/www/html
+# RUN git config --global http.sslverify false  && git clone -b checkpoint22 https://github.com/peerajak/Checkpoint21_WebdevRobotics.git tortoisebot_webapp
+COPY tortoisebot_webapp.tar /
+RUN tar xf tortoisebot_webapp.tar 
+RUN cd tortoisebot_webapp && cp -r * /var/www/html
 
 
 # If the consturct's server
