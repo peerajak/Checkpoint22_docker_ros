@@ -27,6 +27,7 @@ src/cartographer/scripts/install_abseil.sh
 
 RUN cd /tortoisebot_ws/carto_ws &&  source /tortoisebot_ws/devel/setup.bash &&catkin_make_isolated --install --use-ninja -j3 -l3 
 RUN cd /tortoisebot_ws  && rm -rf devel install install_isolated devel_isolated 
+RUN sed -i 's/camera\/image_raw/raspicam_node\/image/' /tortoisebot_ws/src/tortoisebot/tortoisebot_slam/rviz/mapping.rviz
 RUN source /opt/ros/noetic/setup.bash && catkin_make -j3 -l3  
 
 RUN source /tortoisebot_ws/devel/setup.bash 
